@@ -1,14 +1,10 @@
 (ns hsnews.models.post
   (:require [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
-            [clj-time.format :as tform]
             [noir.validation :as vali])
   (:use somnium.congomongo)
   (:use [somnium.congomongo.config :only [*mongo-config*]]))
 
-
-(def date-format (tform/formatter "MM/dd/yy" (ctime/default-time-zone)))
-(def time-format (tform/formatter "h:mma" (ctime/default-time-zone)))
 (def posts-per-page 30)
 
 ; Taken from http://thecomputersarewinning.com/post/clojure-heroku-noir-mongo/
@@ -40,27 +36,16 @@
              [:title "Links can be no more than 2048 characters"])
   (not (vali/errors? :title :link)))
 
-(defn wrap-time [post]
+(defn prepare-new [{:keys [title link] :as post}]
   (let [ts (ctime/now)]
     (-> post
-      (assoc :ts (coerce/to-long ts))
-      (assoc :date (tform/unparse date-format ts))
-      (assoc :tme (tform/unparse time-format ts)))))
-
-(defn next-id []
-  1);(str (db/update! :next-post-id inc)))  
-
-(defn prepare-new [{:keys [title link] :as post}]
-  (let [id (next-id)]
-    (-> post
-      (assoc :id id)
+      (assoc :ts (coerce/to-long ts)))))
       ; (assoc :username (users/me)) ; we'll need this
-      (wrap-time))))
 
 (defn add! [post]
   (maybe-init)
   (when (valid? post)
-    (insert! :posts post)))
+    (insert! :posts (prepare-new post))))
 
 (defn get-page [page]
   (let [page-num (dec (Integer. page))
@@ -70,3 +55,8 @@
 (defn get-latest []
   (get-page 1))
 
+(defn id->post [id]
+  (fetch :posts :where {:_id id}))
+
+(defn view-url [{:keys [_id] :as post}]
+  (str "/posts/" _id))
