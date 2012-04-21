@@ -14,4 +14,7 @@
                  [:h1#logo "Hacker School News"]
                  [:ul [:li (link-to "/" "new")]
                       [:li (link-to "/submit" "submit")]]]
-                [:div#content content]]]))
+                [:div#content content]
+                [:footer
+                 [:ul
+                  [:li (link-to "https://github.com/nicholasbs/hsnews" "source on github")]]]]]))
