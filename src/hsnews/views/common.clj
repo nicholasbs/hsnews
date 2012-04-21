@@ -6,11 +6,12 @@
             (html5
               [:head
                [:title "Hacker School News"]
-               (include-css "/css/reset.css")]
+               (include-css "/css/style.css")]
               [:body
                [:div#wrapper
                 [:header
+                 [:img.logo {:src "/img/hacker-school.jpg"}]
                  [:h1#logo "Hacker School News"]
-                 [:ul [:li (link-to "/newest" "New")]
-                      [:li (link-to "/submit" "Submit")]]]
+                 [:ul [:li (link-to "/" "new")]
+                      [:li (link-to "/submit" "submit")]]]
                 [:div#content content]]]))
