@@ -59,11 +59,13 @@
 
 ; View post / discuss page
 (defpartial post-page [{:keys [title link ts] :as post}]
+            (println post)
             (when post
-              [:h1 (link-to link title)]
-              [:div.subtext
-               [:span.date (tform/unparse date-format (coerce/from-long ts))]
-               [:span " | "]]))
+              [:div.post
+               [:h1 (link-to link title)]
+               [:div.subtext
+                [:span.date (tform/unparse date-format (coerce/from-long ts))]]]))
+                ;[:span " | "]]];))
 
 (defpage "/posts/:_id" {:keys [_id]}
          (posts/maybe-init)
