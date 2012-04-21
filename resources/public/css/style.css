@@ -56,6 +56,12 @@ a img { border: none; }
 /*:focus { outline: 0; }*/
 
 
+a,
+a:visited{
+  color: #000;
+  text-decoration: none;
+}
+
 #wrapper {
   width: 1210px;
   margin: 5px auto;
@@ -72,12 +78,6 @@ header h1 {
   line-height: 24px;
   margin-left: 5px;
   display: inline;
-}
-
-header a,
-header a:visited{
-  color: #000;
-  text-decoration: none;
 }
 
 header .logo {
@@ -119,11 +119,19 @@ header ul li {
   padding: 10px 0;
 }
 
-.post a,
-.post a:visited{
-  color: #000;
-  text-decoration: none;
+footer {
+  border-top: 2px solid #ff6600;
+  background-color: #f6f6ef;
+  overflow: hidden;
 }
+
+footer ul {
+  float:right;
+  list-style-type: none;
+  padding: 5px 20px;
+  font-size: 8pt;
+}
+
 
 
 
