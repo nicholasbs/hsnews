@@ -119,6 +119,21 @@ header ul li {
   padding: 10px 0;
 }
 
+.post {
+  padding: 5px 15px;
+}
+
+.subtext {
+  font-size: 8pt;
+  color: #828282;
+  padding:5px 0;
+}
+
+.subtext a,
+.subtext a:visited {
+  color: #828282;
+}
+
 footer {
   border-top: 2px solid #ff6600;
   background-color: #f6f6ef;
