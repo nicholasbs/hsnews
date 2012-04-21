@@ -1,5 +1,6 @@
 (ns hsnews.views.post
   (:use noir.core
+        somnium.congomongo
         hiccup.core
         hiccup.page-helpers
         hiccup.form-helpers)
@@ -67,4 +68,4 @@
 (defpage "/posts/:_id" {:keys [_id]}
          (posts/maybe-init)
          (common/layout
-           (post-page (posts/id->post _id))))
+           (post-page (fetch-one :posts))))
