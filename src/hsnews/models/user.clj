@@ -5,6 +5,8 @@
   (:use somnium.congomongo)
   (:use [somnium.congomongo.config :only [*mongo-config*]]))
 
+(defn current-user []
+  (session/get :username))
 
 (defn get-user [username]
   (fetch-one :users :where {:username username}))

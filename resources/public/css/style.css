@@ -67,13 +67,17 @@ a:visited{
   color: #b94a48;
 }
 
+form ul {
+  list-style-type: none;
+}
+
 #wrapper {
   width: 1210px;
   margin: 5px auto;
 }
 
 header {
-  background-color: #ff6600;
+  background-color: #00e837;
   height:24px;
 }
 
@@ -81,12 +85,15 @@ header h1 {
   font-weight: bold;
   font-size: 10pt;
   line-height: 24px;
-  margin-left: 5px;
+  margin-left: 2px;
   display: inline;
 }
 
 header .logo {
-  padding: 2px;
+  margin: 2px;
+  border: 1px solid #FFF;
+  width: 18px;
+  height: 18px;
   float: left;
 }
 
@@ -129,7 +136,7 @@ header .user .register::after{
 
 #content {
   padding: 0 5px;
-  background-color: #f6f6ef;
+  background-color: #f2f0ed;
   min-height:300px;
 }
 
@@ -170,16 +177,29 @@ header .user .register::after{
 }
 
 footer {
-  border-top: 2px solid #ff6600;
+  border-top: 2px solid #00e837;;
   background-color: #f6f6ef;
   overflow: hidden;
+  padding: 10px 0;
 }
 
 footer ul {
-  float:right;
   list-style-type: none;
   padding: 5px 20px;
   font-size: 8pt;
+  text-align: center;
+}
+
+footer ul li {
+  display: inline;
+}
+
+footer ul li::after {
+  content: ' | ';
+}
+
+footer ul li:last-child::after {
+  content: '';
 }
 
 

@@ -61,7 +61,6 @@
 
 ; View post / discuss page
 (defpartial post-page [{:keys [title link ts] :as post}]
-            (println post)
             (when post
               [:div.post
                [:h1 (link-to link title)]
