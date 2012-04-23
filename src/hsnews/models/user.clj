@@ -30,15 +30,19 @@
 (defn store! [user]
   (update! :users user user))
 
+(defn autologin! [{:keys [username] :as user}]
+  (session/put! :username username))
+
 (defn login! [{:keys [username password] :as user}]
   (let [{stored-pass :password} (get-user username)]
     (if (and stored-pass
              (crypt/compare password stored-pass))
-      (do
-        (session/put! :username username))
+      (autologin! user)
       (vali/set-error :username "Invalid username and/or password"))))
 
 (defn add! [{:keys [username password] :as user}]
   (when (valid-username? username)
     (when (valid-password? password)
-      (-> user (prepare) (store!)))))
+      (do
+        (-> user (prepare) (store!))
+        (autologin! {:username username})))))
