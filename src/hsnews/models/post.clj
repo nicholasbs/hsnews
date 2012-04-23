@@ -31,7 +31,7 @@
 (defn get-page [page]
   (let [page-num (dec (Integer. page))
         skip (* page-num posts-per-page)]
-    (fetch :posts :limit posts-per-page :skip skip)))
+    (fetch :posts :limit posts-per-page :skip skip :sort {:ts -1})))
 
 (defn get-latest []
   (get-page 1))
