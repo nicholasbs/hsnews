@@ -15,13 +15,11 @@
 
 (def date-format (tform/formatter "MM/dd/yy" (ctime/default-time-zone)))
 
-(defpartial error-text [errors]
-            [:span (string/join " " errors)])
 
 (defpartial post-fields [{:keys [title link]}]
-            (vali/on-error :title error-text)
+            (vali/on-error :title common/error-text)
             (text-field {:placeholder "Title"} :title title)
-            (vali/on-error :link error-text)
+            (vali/on-error :link common/error-text)
             (text-field {:placeholder "Link"} :link link))
 
 ; Main view
@@ -39,7 +37,6 @@
              (map post-item items)])
 
 (defpage "/" []
-         (posts/maybe-init)
          (common/layout
            (post-list (posts/get-latest))))
 
@@ -68,6 +65,5 @@
                 ;[:span " | "]]];))
 
 (defpage "/posts/:_id" {:keys [_id]}
-         (posts/maybe-init)
          (common/layout
            (post-page (fetch-one :posts))))
