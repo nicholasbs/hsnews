@@ -5,6 +5,7 @@
         hiccup.page-helpers
         hiccup.form-helpers)
   (:require [hsnews.models.post :as posts]
+            [hsnews.models.user :as users]
             [noir.validation :as vali]
             [noir.response :as resp]
             [clj-time.core :as ctime]
@@ -26,11 +27,12 @@
                 (vali/on-error :link common/error-text)]])
 
 ; Main view
-(defpartial post-item [{:keys [link title ts] :as post}]
+(defpartial post-item [{:keys [link title author ts] :as post}]
             (when post
              [:li.post
               (link-to link title)
               [:div.subtext
+               [:span "by " author " "]
                [:span.date (tform/unparse date-format (coerce/from-long ts))]
                [:span " | "]
                (link-to (posts/view-url post) "discuss")]]))
@@ -53,18 +55,19 @@
            [:div.disclaimer "Posts are visible only to Hacker Schoolers. Nevertheless, use common sense when posting sensitive stuff."]))
 
 (defpage [:post "/submit/create"] {:keys [link title]}
-         (let [post {:link link :title title}]
+         (let [post {:link link :title title :author (users/current-user)}]
            (if (posts/add! post)
              (resp/redirect "/")
              (render "/submit" post))))
 
 
 ; View post / discuss page
-(defpartial post-page [{:keys [title link ts] :as post}]
+(defpartial post-page [{:keys [title link author ts] :as post}]
             (when post
               [:div.post
                [:h1 (link-to link title)]
                [:div.subtext
+                [:span "by " author " "]
                 [:span.date (tform/unparse date-format (coerce/from-long ts))]]]))
                 ;[:span " | "]]];))
 
