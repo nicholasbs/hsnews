@@ -16,7 +16,8 @@
                [:div#wrapper
                 [:header
                  (link-to "/" [:img.logo {:src "/img/hacker-school.jpg"}])
-                 [:h1#logo "Hacker School News"]
+                 [:h1#logo
+                  (link-to "/" "Hacker School News")]
                  [:ul [:li (link-to "/" "new")]
                       [:li (link-to "/submit" "submit")]]
                  (let [username (session/get :username)]

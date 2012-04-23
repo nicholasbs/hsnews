@@ -17,10 +17,13 @@
 
 
 (defpartial post-fields [{:keys [title link]}]
-            (vali/on-error :title common/error-text)
-            (text-field {:placeholder "Title"} :title title)
-            (vali/on-error :link common/error-text)
-            (text-field {:placeholder "Link"} :link link))
+            [:ul
+              [:li 
+                (text-field {:placeholder "Title"} :title title)
+                (vali/on-error :title common/error-text)]
+              [:li
+                (text-field {:placeholder "Link"} :link link)
+                (vali/on-error :link common/error-text)]])
 
 ; Main view
 (defpartial post-item [{:keys [link title ts] :as post}]
@@ -43,9 +46,11 @@
 ; New submission view
 (defpage "/submit" {:as post}
          (common/layout
-           (form-to [:post "/submit/create"]
+           [:h2 "Submit"]
+           (form-to {:class "postForm"} [:post "/submit/create"]
                     (post-fields post)
-                    (submit-button "Add post"))))
+                    (submit-button "submit"))
+           [:div.disclaimer "Posts are visible only to Hacker Schoolers. Nevertheless, use common sense when posting sensitive stuff."]))
 
 (defpage [:post "/submit/create"] {:keys [link title]}
          (let [post {:link link :title title}]

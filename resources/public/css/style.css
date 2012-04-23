@@ -144,6 +144,16 @@ header .user .register::after{
   padding: 10px 0;
 }
 
+#content .disclaimer {
+  padding: 20px 0;
+  font-size: 10pt;
+  color: #828282;
+}
+
+.postForm input[type=text]{
+  width: 408px;
+}
+
 .post {
   padding: 5px 15px;
 }
