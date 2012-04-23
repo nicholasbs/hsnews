@@ -5,7 +5,7 @@
             [noir.session :as session]))
 
 (defpartial error-text [errors]
-            [:span (string/join " " errors)])
+            [:span.error (string/join " " errors)])
 
 (defpartial layout [& content]
             (html5
@@ -18,14 +18,15 @@
                  (link-to "/" [:img.logo {:src "/img/hacker-school.jpg"}])
                  [:h1#logo "Hacker School News"]
                  [:ul [:li (link-to "/" "new")]
-                      [:li (link-to "/submit" "submit")]]]
-                 [:div.user
-                  (let [username (session/get :username)]
-                    (if username
-                        [:div
-                          [:span username]
-                          (link-to "/logout" "log out")]
-                        (link-to "/login" "log in")))]
+                      [:li (link-to "/submit" "submit")]]
+                 (let [username (session/get :username)]
+                  (if username
+                    [:div.user.loggedin
+                      [:span.username username]
+                      (link-to "/logout" "log out")]
+                    [:div.user.loggedout
+                      (link-to {:class "register"} "/register" "register")
+                      (link-to "/login" "log in")]))]
                 [:div#content content]
                 [:footer
                  [:ul

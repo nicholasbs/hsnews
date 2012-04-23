@@ -62,6 +62,11 @@ a:visited{
   text-decoration: none;
 }
 
+.error{
+  font-size: 10pt;
+  color: #b94a48;
+}
+
 #wrapper {
   width: 1210px;
   margin: 5px auto;
@@ -108,8 +113,28 @@ header ul li {
   line-height:20px;
 }
 
+header .user {
+  float: right;
+  width: 200px;
+  text-align: right;
+  padding-right: 5px;
+  font-size: 10pt;
+  line-height: 24px;
+}
+
+header .user .username::after,
+header .user .register::after{
+  content: ' | ';
+}
+
 #content {
+  padding: 0 5px;
   background-color: #f6f6ef;
+  min-height:300px;
+}
+
+#content h2 {
+  line-height: 200%;
 }
 
 #content ol {

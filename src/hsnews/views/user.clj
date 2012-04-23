@@ -9,10 +9,13 @@
             [hsnews.views.common :as common]))
 
 (defpartial user-fields [{:keys [username] :as user}]
-            (vali/on-error :username common/error-text)
-            (text-field {:placeholder "Username"} :username username)
-            (vali/on-error :password common/error-text)
-            (password-field {:placeholder "Password"} :password))
+            [:ul.userForm
+             [:li
+              (text-field {:placeholder "Username"} :username username)
+              (vali/on-error :username common/error-text)]
+             [:li
+              (password-field {:placeholder "Password"} :password)
+              (vali/on-error :password common/error-text)]])
 
 
 (defpage "/login" {:as user}
