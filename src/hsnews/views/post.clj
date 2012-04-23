@@ -5,7 +5,6 @@
         hiccup.page-helpers
         hiccup.form-helpers)
   (:require [hsnews.models.post :as posts]
-            [hsnews.models.user :as users]
             [noir.validation :as vali]
             [noir.response :as resp]
             [clj-time.core :as ctime]
@@ -55,7 +54,7 @@
            [:div.disclaimer "Posts are visible only to Hacker Schoolers. Nevertheless, use common sense when posting sensitive stuff."]))
 
 (defpage [:post "/submit/create"] {:keys [link title]}
-         (let [post {:link link :title title :author (users/current-user)}]
+         (let [post {:link link :title title}]
            (if (posts/add! post)
              (resp/redirect "/")
              (render "/submit" post))))

@@ -1,7 +1,8 @@
 (ns hsnews.models.post
   (:require [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
-            [noir.validation :as vali])
+            [noir.validation :as vali]
+            [hsnews.models.user :as users])
   (:use somnium.congomongo)
   (:use [somnium.congomongo.config :only [*mongo-config*]]))
 
@@ -18,11 +19,11 @@
              [:title "Links can be no more than 2048 characters"])
   (not (vali/errors? :title :link)))
 
-(defn prepare-new [{:keys [title link] :as post}]
+(defn prepare-new [post]
   (let [ts (ctime/now)]
     (-> post
-      (assoc :ts (coerce/to-long ts)))))
-      ; (assoc :username (users/me)) ; we'll need this
+      (assoc :ts (coerce/to-long ts))
+      (assoc :author (users/current-user)))))
 
 (defn add! [post]
   (when (valid? post)
