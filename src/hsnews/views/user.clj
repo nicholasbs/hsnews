@@ -73,3 +73,9 @@
             [:li
              [:span.label " "]
              (posts-link username "posts")]]))
+
+(defpage "/users/:username/comments" {:keys [username]}
+         (common/layout
+           [:h2 "Comments"]
+            (common/comment-list (users/get-comments username))))
+

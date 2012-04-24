@@ -17,6 +17,7 @@
   (let [ts (ctime/now)]
     (-> comment
       (assoc :ts (coerce/to-long ts))
+      (assoc :post_id (object-id (get comment :post_id)))
       (assoc :author (users/current-user)))))
 
 (defn add! [comment]

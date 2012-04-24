@@ -11,6 +11,9 @@
 (defn get-user [username]
   (fetch-one :users :where {:username username}))
 
+(defn get-comments [username]
+  (fetch :comments :where {:author username}))
+
 (defn prepare [{password :password :as user}]
   (assoc user :password (crypt/encrypt password)))
 

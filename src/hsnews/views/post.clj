@@ -8,13 +8,10 @@
             [hsnews.models.comment :as comments]
             [noir.validation :as vali]
             [noir.response :as resp]
-            [clj-time.core :as ctime]
-            [clj-time.format :as tform]
             [clj-time.coerce :as coerce]
+            [clj-time.format :as tform]
             [hsnews.views.common :as common]
             [clojure.string :as string]))
-
-(def date-format (tform/formatter "MM/dd/yy" (ctime/default-time-zone)))
 
 
 (defpartial post-fields [{:keys [title link]}]
@@ -33,7 +30,7 @@
               (link-to link title)
               [:div.subtext
                [:span "by " (common/user-link author) " "]
-               [:span.date (tform/unparse date-format (coerce/from-long ts))]
+               [:span.date (tform/unparse common/date-format (coerce/from-long ts))]
                [:span " | "]
                (link-to (posts/view-url post) "discuss")]]))
 
@@ -71,18 +68,6 @@
                (hidden-field :post_id _id)
                (submit-button "add comment")))
 
-(defpartial comment-item [{:keys [author ts body]}]
-            [:li
-             [:div.subtext
-              [:span.author author]
-              [:span.date (tform/unparse date-format (coerce/from-long ts))]]
-             [:div.commentBody body]])
-
-(defpartial comment-list [{:as post}]
-            (let [comments (posts/get-comments post)]
-              [:ol
-                (map comment-item comments)]))
-
 ; View post / discuss page
 (defpartial post-page [{:keys [title link author ts] :as post}
                        {:as comment}]
@@ -91,9 +76,9 @@
                [:h1 (link-to link title)]
                [:div.subtext
                 [:span "by " (common/user-link author) " "]
-                [:span.date (tform/unparse date-format (coerce/from-long ts))]]
+                [:span.date (tform/unparse common/date-format (coerce/from-long ts))]]
                (comment-form comment post)
-               (comment-list post)]))
+               (common/comment-list (posts/get-comments post))]))
 
 (defpage "/posts/:_id" {:keys [_id]}
          (common/layout
@@ -101,8 +86,8 @@
 
 (defpage [:post "/comments/create"] {:keys [body post_id parent_id]}
          (let [comment {:body body :post_id post_id :parent_id parent_id}
-               post_url (str "/posts/" post_id)]
+               post_url (str "/posts/" (.toString post_id))]
           (if (comments/add! comment)
             (resp/redirect post_url) ; should redirect to post page
-            (render post_url {:_id post_id} comment))))
+            (render post_url {:_id (.toString post_id)} comment))))
 
