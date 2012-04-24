@@ -25,10 +25,14 @@
 (defn user-link [username]
   (link-to (str "/users/" username) username))
 
+(defpartial comment-count [{:keys [_id] :as post}]
+            (let [comment-count (fetch-count :comments :where {:post_id _id})]
+              (link-to (posts/view-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
+
 (defpartial comment-item [{:keys [author ts body post_title post_id]}]
             [:li
              [:div.subtext
-              [:span.author author]
+              [:span.author "by " author]
               [:span.date (tform/unparse date-format (coerce/from-long ts))]
               [:span.postTitle "on: " (link-to (str "/posts/" (.toString post_id)) post_title)]]
              [:div.commentBody body]])
@@ -40,21 +44,20 @@
             (let [posts (fetch-by-ids :posts (map #(get % :post_id) comments))
                   posts-by-id (reduce #(assoc %1 (get %2 :_id) %2) {} posts)
                   comments (map #(assoc % :post_title (get (get posts-by-id (get % :post_id)) :title)) comments)]
-              [:ol
+              [:ol.commentList
                (map comment-item comments)]))
 
 (defpartial post-item [{:keys [link title author ts] :as post}]
             (when post
              [:li.post
-              (link-to link title)
+              (link-to {:class "postLink"} link title)
               [:div.subtext
                [:span "by " (user-link author) " "]
                [:span.date (tform/unparse date-format (coerce/from-long ts))]
-               [:span " | "]
-               (link-to (posts/view-url post) "discuss")]]))
+               [:span.commentCount (comment-count post)]]]))
 
 (defpartial post-list [items]
-            [:ol.posts
+            [:ol.postList
              (map post-item items)])
 
 (defpartial error-text [errors]

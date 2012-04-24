@@ -60,7 +60,7 @@
 
 (defpage "/users/:username" {:keys [username]}
          (common/layout
-           [:ul
+           [:ul.userList
             [:li
               [:span.label "user:"]
               username]
@@ -69,10 +69,10 @@
              (hs-link username)]
             [:li
              [:span.label " "]
-             (comments-link username "comments")]
+             (posts-link username "submissions")]
             [:li
              [:span.label " "]
-             (posts-link username "posts")]]))
+             (comments-link username "comments")]]))
 
 (defpage "/users/:username/comments" {:keys [username]}
          (common/layout

@@ -56,14 +56,15 @@
                (submit-button "add comment")))
 
 ; View post / discuss page
-(defpartial post-page [{:keys [title link author ts] :as post}
+(defpartial post-page [{:keys [title link author ts _id] :as post}
                        {:as comment}]
             (when post
-              [:div.post
+              [:div.postPage
                [:h1 (link-to link title)]
                [:div.subtext
                 [:span "by " (common/user-link author) " "]
-                [:span.date (tform/unparse common/date-format (coerce/from-long ts))]]
+                [:span.date (tform/unparse common/date-format (coerce/from-long ts))]
+                [:span.commentCount (common/comment-count post)]]
                (comment-form comment post)
                (common/comment-list (posts/get-comments post))]))
 

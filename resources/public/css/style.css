@@ -135,7 +135,7 @@ header .user .register::after{
 }
 
 #content {
-  padding: 0 5px;
+  padding: 5px 15px;
   background-color: #f2f0ed;
   min-height:300px;
 }
@@ -144,36 +144,113 @@ header .user .register::after{
   line-height: 200%;
 }
 
-#content ol {
-  margin-left: 30px;
-  color: #828282;
-  font-size: 10pt;
-  padding: 10px 0;
-}
-
-#content .disclaimer {
+.disclaimer {
   padding: 20px 0;
   font-size: 10pt;
   color: #828282;
+}
+
+.commentForm {
+  padding-top: 15px;
+}
+
+.commentForm textarea {
+  width: 496px;
+  height: 96px;
 }
 
 .postForm input[type=text]{
   width: 408px;
 }
 
-.post {
-  padding: 5px 15px;
+ol.commentList {
+  list-style-type: none;
+  padding-left: none;
+  font-size: 9pt;
+}
+
+ol.commentList .postTitle {
+  display: none;
+}
+
+.postPage ol.commentList {
+  padding-top: 60px;
+}
+
+.postPage h1 {
+  font-size: 10pt;
+  padding-top: 6px;
+  height: 15px;
+}
+
+ol.postList {
+  margin-left: 15px;
+  color: #828282;
+  font-size: 10pt;
+  padding: 10px 0;
+}
+
+ol.postList li {
+  height: 30px;
+}
+
+ol.postList .postLink {
+  display: block;
+  height: 15px;
+}
+
+ul.userList {
+  list-style-type: none;
+  color: #828282;
+  font-size: 10pt;
+}
+
+ul.userList a {
+  text-decoration: underline;
+}
+
+ul.userList li {
+  height: 25px;
+}
+
+ul.userList li span.label {
+  display: inline-block;
+  width: 80px;
 }
 
 .subtext {
-  font-size: 8pt;
+  font-size: 7pt;
   color: #828282;
-  padding:5px 0;
+  padding: 0;
+}
+
+.postPage .subtext {
+  padding: 3px 0;
+}
+
+.commentList .subtext {
+  font-size: 8pt;
 }
 
 .subtext a,
 .subtext a:visited {
   color: #828282;
+}
+
+.subtext a:hover {
+  text-decoration: underline;
+}
+
+.subtext .date {
+  padding-left: 5px;
+}
+
+.subtext .postTitle {
+  padding-left: 5px;
+}
+
+.subtext .commentCount::before {
+  content: ' | ';
 }
 
 footer {
