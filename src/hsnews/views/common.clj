@@ -1,8 +1,7 @@
 (ns hsnews.views.common
-  (:use [noir.core]
+  (:use noir.core
         [hiccup.page-helpers :only [include-css html5 link-to]]
         somnium.congomongo)
-        (:use [somnium.congomongo.config :only [*mongo-config*]])
   (:require [clojure.string :as string]
             [noir.response :as resp]
             [noir.request :as req]

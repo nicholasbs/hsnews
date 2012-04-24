@@ -1,9 +1,9 @@
 (ns hsnews.views.post
   (:use noir.core
-        somnium.congomongo
         hiccup.core
         hiccup.page-helpers
-        hiccup.form-helpers)
+        hiccup.form-helpers
+        somnium.congomongo)
   (:require [hsnews.models.post :as posts]
             [hsnews.models.comment :as comments]
             [noir.validation :as vali]
@@ -24,7 +24,6 @@
                 (vali/on-error :link common/error-text)]])
 
 ; Main view
-
 (defpage "/" []
          (common/layout
            (common/post-list (posts/get-latest))))

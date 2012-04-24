@@ -1,10 +1,9 @@
 (ns hsnews.models.post
+  (:use somnium.congomongo)
   (:require [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
             [noir.validation :as vali]
-            [hsnews.models.user :as users])
-  (:use somnium.congomongo)
-  (:use [somnium.congomongo.config :only [*mongo-config*]]))
+            [hsnews.models.user :as users]))
 
 (def posts-per-page 30)
 

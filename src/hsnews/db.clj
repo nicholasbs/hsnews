@@ -1,6 +1,6 @@
 (ns hsnews.db
-  (:use somnium.congomongo)
-  (:use [somnium.congomongo.config :only [*mongo-config*]]))
+  (:use somnium.congomongo
+        [somnium.congomongo.config :only [*mongo-config*]]))
 
 ; Taken from http://thecomputersarewinning.com/post/clojure-heroku-noir-mongo/
 (defn split-mongo-url [url]

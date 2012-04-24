@@ -1,10 +1,9 @@
 (ns hsnews.models.comment
+  (:use somnium.congomongo)
   (:require [hsnews.models.user :as users]
             [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
-            [noir.validation :as vali])
-  (:use somnium.congomongo)
-  (:use [somnium.congomongo.config :only [*mongo-config*]]))
+            [noir.validation :as vali]))
 
 (defn valid? [{:keys [body]}]
   (vali/rule (vali/has-value? body)

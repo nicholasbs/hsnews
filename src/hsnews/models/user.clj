@@ -1,9 +1,8 @@
 (ns hsnews.models.user
+  (:use somnium.congomongo)
   (:require [noir.util.crypt :as crypt]
             [noir.validation :as vali]
-            [noir.session :as session])
-  (:use somnium.congomongo)
-  (:use [somnium.congomongo.config :only [*mongo-config*]]))
+            [noir.session :as session]))
 
 (defn current-user []
   (session/get :username))
