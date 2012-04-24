@@ -4,8 +4,7 @@
             [noir.validation :as vali]
             [hsnews.models.user :as users])
   (:use somnium.congomongo)
-  (:use [somnium.congomongo.config :only [*mongo-config*]])
-  (:import [org.bson.types ObjectId]))
+  (:use [somnium.congomongo.config :only [*mongo-config*]]))
 
 (def posts-per-page 30)
 
@@ -39,11 +38,7 @@
   (get-page 1))
 
 (defn id->post [id]
-  (let [id-type (type id)
-        id (if (= id-type org.bson.types.ObjectId)
-                id
-                (ObjectId. id))];
-      (fetch-by-id :posts id)))
+  (fetch-by-id :posts (object-id id)))
 
 (defn view-url [{:keys [_id] :as post}]
   (str "/posts/" _id))
