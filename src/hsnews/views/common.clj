@@ -22,6 +22,9 @@
 
 (def date-format (tform/formatter "MM/dd/yy" (ctime/default-time-zone)))
 
+(defn extract-domain-from-url [url]
+  (second (re-find #"^(?:[^:/]*://)?(?:www\.)?([^/\?]+)(?:.*)$" url)))
+
 (defn user-link [username]
   (link-to (str "/users/" username) username))
 
@@ -50,7 +53,9 @@
 (defpartial post-item [{:keys [link title author ts] :as post}]
             (when post
              [:li.post
-              (link-to {:class "postLink"} link title)
+              [:div.title
+                (link-to link title)
+                [:span.domain "(" (extract-domain-from-url link) ")"]]
               [:div.subtext
                [:span "by " (user-link author) " "]
                [:span.date (tform/unparse date-format (coerce/from-long ts))]

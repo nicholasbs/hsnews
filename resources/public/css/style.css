@@ -194,9 +194,14 @@ ol.postList li {
   height: 30px;
 }
 
-ol.postList .postLink {
-  display: block;
+ol.postList .title  {
   height: 15px;
+}
+
+.domain {
+  font-size: 8pt;
+  margin-left: 5px;
+  color: #828282;
 }
 
 ul.userList {

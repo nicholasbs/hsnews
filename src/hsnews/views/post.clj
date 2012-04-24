@@ -60,7 +60,9 @@
                        {:as comment}]
             (when post
               [:div.postPage
-               [:h1 (link-to link title)]
+               [:h1
+                (link-to link title)
+                [:span.domain "(" (common/extract-domain-from-url link) ")"]]
                [:div.subtext
                 [:span "by " (common/user-link author) " "]
                 [:span.date (tform/unparse common/date-format (coerce/from-long ts))]
