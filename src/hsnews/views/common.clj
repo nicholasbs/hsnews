@@ -9,9 +9,8 @@
             [clj-time.format :as tform]
             [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
-            [hsnews.models.user :as users]))
-
-
+            [hsnews.models.user :as users]
+            [hsnews.models.post :as posts]))
 
 (pre-route "/*" {:keys [uri]}
            (when-not (or 
@@ -43,6 +42,20 @@
                   comments (map #(assoc % :post_title (get (get posts-by-id (get % :post_id)) :title)) comments)]
               [:ol
                (map comment-item comments)]))
+
+(defpartial post-item [{:keys [link title author ts] :as post}]
+            (when post
+             [:li.post
+              (link-to link title)
+              [:div.subtext
+               [:span "by " (user-link author) " "]
+               [:span.date (tform/unparse date-format (coerce/from-long ts))]
+               [:span " | "]
+               (link-to (posts/view-url post) "discuss")]]))
+
+(defpartial post-list [items]
+            [:ol.posts
+             (map post-item items)])
 
 (defpartial error-text [errors]
             [:span.error (string/join " " errors)])

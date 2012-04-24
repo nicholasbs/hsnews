@@ -24,23 +24,10 @@
                 (vali/on-error :link common/error-text)]])
 
 ; Main view
-(defpartial post-item [{:keys [link title author ts] :as post}]
-            (when post
-             [:li.post
-              (link-to link title)
-              [:div.subtext
-               [:span "by " (common/user-link author) " "]
-               [:span.date (tform/unparse common/date-format (coerce/from-long ts))]
-               [:span " | "]
-               (link-to (posts/view-url post) "discuss")]]))
-
-(defpartial post-list [items]
-            [:ol.posts
-             (map post-item items)])
 
 (defpage "/" []
          (common/layout
-           (post-list (posts/get-latest))))
+           (common/post-list (posts/get-latest))))
 
 ; New submission view
 (defpage "/submit" {:as post}
