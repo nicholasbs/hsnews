@@ -63,10 +63,7 @@
                [:h1
                 (link-to link title)
                 [:span.domain "(" (common/extract-domain-from-url link) ")"]]
-               [:div.subtext
-                [:span "by " (common/user-link author) " "]
-                [:span.date (tform/unparse common/date-format (coerce/from-long ts))]
-                [:span.commentCount (common/comment-count post)]]
+               (common/subtext post)
                (comment-form comment post)
                (common/comment-list (posts/get-comments post))]))
 

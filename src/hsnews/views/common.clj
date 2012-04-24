@@ -32,14 +32,16 @@
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
               (link-to (posts/view-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
 
-(defpartial comment-item [{:keys [author ts body post_title post_id]}]
-            [:li
-             [:div.subtext
-              [:span.author "by " (user-link author)]
+(defpartial subtext [{:keys [ts author] :as post}]
+            [:div.subtext
+              [:span "by " (user-link author)]
               [:span.date (tform/unparse date-format (coerce/from-long ts))]
-              [:span.postTitle "on: " (link-to (str "/posts/" (.toString post_id)) post_title)]]
-             [:div.commentBody body]])
+              [:span.commentCount (comment-count post)]])
 
+(defpartial comment-item [{:keys [body] :as post}]
+            [:li
+             (subtext post)
+             [:div.commentBody body]])
 
 ; TODO Make this function less horrible and inefficient.
 ; (no need for extra map over comments)
@@ -56,10 +58,7 @@
               [:div.title
                 (link-to link title)
                 [:span.domain "(" (extract-domain-from-url link) ")"]]
-              [:div.subtext
-               [:span "by " (user-link author) " "]
-               [:span.date (tform/unparse date-format (coerce/from-long ts))]
-               [:span.commentCount (comment-count post)]]]))
+              (subtext post)]))
 
 (defpartial post-list [items]
             [:ol.postList

@@ -247,11 +247,11 @@ ul.userList li span.label {
 }
 
 .subtext .date {
-  padding-left: 5px;
+  padding-left: 4px;
 }
 
 .subtext .postTitle {
-  padding-left: 5px;
+  padding-left: 4px;
 }
 
 .subtext .commentCount::before {
