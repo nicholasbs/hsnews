@@ -31,15 +31,15 @@
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
               (link-to (posts/view-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
 
-(defpartial subtext [{:keys [ts author] :as post}]
+(defpartial subtext [{:keys [ts author post_id] :as item}]
             [:div.subtext
               [:span "by " (user-link author)]
               [:span.date (tform/unparse date-format (coerce/from-long ts))]
-              [:span.commentCount (comment-count post)]])
+              (if-not post_id [:span.commentCount (comment-count item)])])
 
-(defpartial comment-item [{:keys [body] :as post}]
+(defpartial comment-item [{:keys [body] :as comment}]
             [:li
-             (subtext post)
+             (subtext comment)
              [:div.commentBody body]])
 
 ; TODO Make this function less horrible and inefficient.
