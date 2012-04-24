@@ -35,7 +35,7 @@
 (defpartial comment-item [{:keys [author ts body post_title post_id]}]
             [:li
              [:div.subtext
-              [:span.author "by " author]
+              [:span.author "by " (user-link author)]
               [:span.date (tform/unparse date-format (coerce/from-long ts))]
               [:span.postTitle "on: " (link-to (str "/posts/" (.toString post_id)) post_title)]]
              [:div.commentBody body]])
