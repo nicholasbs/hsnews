@@ -5,6 +5,7 @@
         hiccup.page-helpers
         hiccup.form-helpers)
   (:require [hsnews.models.post :as posts]
+            [hsnews.models.comment :as comments]
             [noir.validation :as vali]
             [noir.response :as resp]
             [clj-time.core :as ctime]
@@ -59,17 +60,49 @@
              (resp/redirect "/")
              (render "/submit" post))))
 
+; Comments
+(defpartial comment-form [{:keys [body]}
+                          {:keys [_id]}]
+            (form-to {:class "commentForm"} [:post "/comments/create"]
+              [:ul
+               [:li
+                (text-area :body body)
+                (vali/on-error :body common/error-text)]]
+               (hidden-field :post_id _id)
+               (submit-button "add comment")))
+
+(defpartial comment-item [{:keys [author ts body]}]
+            [:li
+             [:div.subtext
+              [:span.author author]
+              [:span.date (tform/unparse date-format (coerce/from-long ts))]]
+             [:div.commentBody body]])
+
+(defpartial comment-list [{:as post}]
+            (let [comments (posts/get-comments post)]
+              [:ol
+                (map comment-item comments)]))
 
 ; View post / discuss page
-(defpartial post-page [{:keys [title link author ts] :as post}]
+(defpartial post-page [{:keys [title link author ts] :as post}
+                       {:as comment}]
             (when post
               [:div.post
                [:h1 (link-to link title)]
                [:div.subtext
                 [:span "by " author " "]
-                [:span.date (tform/unparse date-format (coerce/from-long ts))]]]))
-                ;[:span " | "]]];))
+                [:span.date (tform/unparse date-format (coerce/from-long ts))]]
+               (comment-form comment post)
+               (comment-list post)]))
 
 (defpage "/posts/:_id" {:keys [_id]}
          (common/layout
-           (post-page (fetch-one :posts))))
+           (post-page (posts/id->post _id) {})))
+
+(defpage [:post "/comments/create"] {:keys [body post_id parent_id]}
+         (let [comment {:body body :post_id post_id :parent_id parent_id}
+               post_url (str "/posts/" post_id)]
+          (if (comments/add! comment)
+            (resp/redirect post_url) ; should redirect to post page
+            (render post_url {:_id post_id} comment))))
+
