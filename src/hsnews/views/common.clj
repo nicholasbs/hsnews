@@ -16,6 +16,9 @@
                        (re-find #"^/(css)|(img)|(js)|(favicon)" uri))
             (resp/redirect "/login")))
 
+(defn user-link [username]
+  (link-to (str "/users/" username) username))
+
 (defpartial error-text [errors]
             [:span.error (string/join " " errors)])
 
@@ -35,7 +38,7 @@
                  (let [username (users/current-user)]
                   (if username
                     [:div.user.loggedin
-                      [:span.username username]
+                      [:span.username (user-link username)]
                       (link-to "/logout" "log out")]
                     [:div.user.loggedout
                       (link-to {:class "register"} "/register" "register")

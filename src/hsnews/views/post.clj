@@ -32,7 +32,7 @@
              [:li.post
               (link-to link title)
               [:div.subtext
-               [:span "by " author " "]
+               [:span "by " (common/user-link author) " "]
                [:span.date (tform/unparse date-format (coerce/from-long ts))]
                [:span " | "]
                (link-to (posts/view-url post) "discuss")]]))
@@ -90,7 +90,7 @@
               [:div.post
                [:h1 (link-to link title)]
                [:div.subtext
-                [:span "by " author " "]
+                [:span "by " (common/user-link author) " "]
                 [:span.date (tform/unparse date-format (coerce/from-long ts))]]
                (comment-form comment post)
                (comment-list post)]))

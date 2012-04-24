@@ -51,3 +51,6 @@
 (defn get-comments [{:keys [_id]}]
   (let [id-str (.toString _id)]
     (fetch :comments :where {:post_id id-str})))
+
+(defn get-by-user [username]
+  (fetch :posts :where {:author username}))
