@@ -53,8 +53,9 @@ blockquote, q { quotes: "" ""; }
 
 a img { border: none; }
 
-/*:focus { outline: 0; }*/
-
+ul {
+  list-style-type: none;
+}
 
 a,
 a:visited{
@@ -65,10 +66,6 @@ a:visited{
 .error{
   font-size: 10pt;
   color: #b94a48;
-}
-
-form ul {
-  list-style-type: none;
 }
 
 #wrapper {
@@ -106,7 +103,6 @@ header li:first-child::before{
 }
 
 header ul {
-  list-style-type: none;
   margin: 0;
   display: inline;
   font-size:10pt;
@@ -148,10 +144,10 @@ a.upvote {
   color: #828282;
   width: 13px;
   height: 15px;
-  float: left;
   padding-top: 4px;
-  margin-right: -6px;
+  margin-left:-3px;
   font-size: 7pt;
+  font-family: Arial;
 }
 
 .disclaimer {
@@ -174,7 +170,7 @@ a.upvote {
 }
 
 ol.commentList {
-  list-style-type: none;
+  list-style-position: none;
   padding-left: none;
   font-size: 9pt;
 }
@@ -194,23 +190,24 @@ ol.commentList .postTitle {
 }
 
 ol.postList {
-  margin: 0;
+  margin-left: -6px;
   color: #828282;
   font-size: 10pt;
   padding: 10px 0;
+  list-style-position: inside;
 }
 
 ol.postList li {
-  height: 30px;
+  height: 34px;
 }
 
 ol.postList .title {
   height: 15px;
-  padding-left: 12px;
+  display: inline-block;
 }
 
 ol.postList .title a.postLink {
-  margin-left: 5px;
+  margin-left: 3px;
 }
 
 .domain {
@@ -220,7 +217,6 @@ ol.postList .title a.postLink {
 }
 
 ul.userList {
-  list-style-type: none;
   color: #828282;
   font-size: 10pt;
 }
@@ -244,7 +240,8 @@ ul.userList li span.label {
 }
 
 .post .subtext {
-  padding-left: 25px;
+  padding-left: 27px;
+  margin-top: -3px;
 }
 
 .postPage .subtext {
@@ -284,7 +281,6 @@ footer {
 }
 
 footer ul {
-  list-style-type: none;
   padding: 5px 20px;
   font-size: 8pt;
   text-align: center;
