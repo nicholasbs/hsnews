@@ -82,8 +82,10 @@
                  (link-to "/" [:img.logo {:src "/img/hacker-school-logo.png"}])
                  [:h1#logo
                   (link-to "/" "Hacker School News")]
-                 [:ul [:li (link-to "/" "new")]
-                      [:li (link-to "/submit" "submit")]]
+                 [:ul 
+                  [:li (link-to "/" "new")]
+                  [:li (link-to "http://www.hackruiter.com/companies" "jobs")]
+                  [:li (link-to "/submit" "submit")]]
                  (let [username (users/current-user)]
                   (if username
                     [:div.user.loggedin
