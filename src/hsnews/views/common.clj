@@ -37,7 +37,7 @@
 
 (defpartial subtext [{:keys [ts author post_id] :as item}]
             [:div.subtext
-              [:span "by " (user-link author)]
+              [:span.author (user-link author)]
               [:span.date (tform/unparse date-format (coerce/from-long ts))]
               (if-not post_id [:span.commentCount (comment-count item)])])
 
