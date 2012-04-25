@@ -154,6 +154,11 @@ a.upvote {
   font-family: Arial;
 }
 
+.postPage a.upvote {
+  padding-right: 3px;
+  margin-left: -13px;
+}
+
 .disclaimer {
   padding: 20px 0;
   font-size: 10pt;
@@ -180,7 +185,7 @@ ol.commentList {
 }
 
 ol.commentList li {
-  padding-top: 4px;
+  padding-top: 10px;
 }
 
 ol.commentList li .postTitle {
@@ -199,6 +204,7 @@ ol.commentList li .commentBody {
   font-size: 10pt;
   padding-top: 6px;
   height: 15px;
+  display: inline-block;
 }
 
 ol.postList {
@@ -259,10 +265,6 @@ ol.userList {
 .post .subtext {
   padding-left: 27px;
   margin-top: -3px;
-}
-
-.postPage .subtext {
-  padding: 3px 0;
 }
 
 .commentList .subtext {

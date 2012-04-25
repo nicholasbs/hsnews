@@ -59,6 +59,7 @@
                        {:as comment}]
             (when post
               [:div.postPage
+               (common/upvote-link post)
                [:h1
                 (link-to link title)
                 [:span.domain "(" (common/extract-domain-from-url link) ")"]]
