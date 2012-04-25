@@ -29,6 +29,12 @@
               (password-field {:placeholder "Password"} :password)
               (vali/on-error :password common/error-text)]])
 
+(defpartial user-item [{:keys [username] :as user}]
+            [:li (common/user-link username)])
+
+(defpartial list-users [users]
+            [:ol.userList
+             (map user-item users)])
 
 (defpage "/login" {:as user}
          (common/layout
@@ -60,7 +66,7 @@
 
 (defpage "/users/:username" {:keys [username]}
          (common/layout
-           [:ul.userList
+           [:ul.userFields
             [:li
               [:span.label "user:"]
               username]
@@ -84,3 +90,7 @@
            [:h2 "Submissions"]
             (common/post-list (users/get-posts username))))
 
+(defpage "/lists" {}
+         (common/layout
+           [:h2 "All Users"]
+            (list-users (users/get-all-users))))

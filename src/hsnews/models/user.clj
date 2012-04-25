@@ -35,6 +35,8 @@
              [:password "Password must be at least 8 characters."])
   (not (vali/errors? :password)))
 
+(defn get-all-users []
+  (fetch :users))
 
 (defn store! [user]
   (update! :users user user))
