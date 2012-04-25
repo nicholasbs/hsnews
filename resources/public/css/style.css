@@ -137,11 +137,21 @@ header .user .register::after{
 #content {
   padding: 5px 15px;
   background-color: #f2f0ed;
-  min-height:300px;
+  min-height: 300px;
 }
 
 #content h2 {
   line-height: 200%;
+}
+
+a.upvote {
+  color: #828282;
+  width: 13px;
+  height: 15px;
+  float: left;
+  padding-top: 4px;
+  margin-right: -6px;
+  font-size: 7pt;
 }
 
 .disclaimer {
@@ -184,7 +194,7 @@ ol.commentList .postTitle {
 }
 
 ol.postList {
-  margin-left: 15px;
+  margin: 0;
   color: #828282;
   font-size: 10pt;
   padding: 10px 0;
@@ -194,8 +204,13 @@ ol.postList li {
   height: 30px;
 }
 
-ol.postList .title  {
+ol.postList .title {
   height: 15px;
+  padding-left: 12px;
+}
+
+ol.postList .title a.postLink {
+  margin-left: 5px;
 }
 
 .domain {
@@ -226,7 +241,10 @@ ul.userList li span.label {
 .subtext {
   font-size: 7pt;
   color: #828282;
-  padding: 0;
+}
+
+.post .subtext {
+  padding-left: 25px;
 }
 
 .postPage .subtext {

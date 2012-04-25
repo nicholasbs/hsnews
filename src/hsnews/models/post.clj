@@ -42,6 +42,9 @@
 (defn view-url [{:keys [_id] :as post}]
   (str "/posts/" _id))
 
+(defn upvote-url [{:keys [_id]}]
+  (str "/posts/" _id "/upvote"))
+
 (defn get-comments [{:keys [_id]}]
   (fetch :comments :where {:post_id _id}))
 

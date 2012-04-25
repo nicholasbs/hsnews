@@ -24,8 +24,12 @@
 (defn extract-domain-from-url [url]
   (second (re-find #"^(?:[^:/]*://)?(?:www\.)?([^/\?]+)(?:.*)$" url)))
 
-(defn user-link [username]
+(defpartial user-link [username]
   (link-to (str "/users/" username) username))
+
+(defpartial upvote-link [post]
+  (link-to {:class "upvote"} (posts/upvote-url post) "&#9650;"))
+
 
 (defpartial comment-count [{:keys [_id] :as post}]
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
@@ -55,7 +59,8 @@
             (when post
              [:li.post
               [:div.title
-                (link-to link title)
+                (upvote-link post)
+                (link-to {:class "postLink"} link title)
                 [:span.domain "(" (extract-domain-from-url link) ")"]]
               (subtext post)]))
 
