@@ -89,7 +89,7 @@
                  (let [username (users/current-user)]
                   (if username
                     [:div.user.loggedin
-                      [:span.username (user-link username)]
+                      [:span.username (user-link username) " (" (users/get-karma username) ")"]
                       (link-to "/logout" "log out")]
                     [:div.user.loggedout
                       (link-to {:class "register"} "/register" "register")

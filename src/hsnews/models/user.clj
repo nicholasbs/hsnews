@@ -16,6 +16,8 @@
 (defn get-posts [username]
   (fetch :posts :where {:author username}))
 
+(defn get-karma [username] 0)
+
 (defn prepare [{password :password :as user}]
   (assoc user :password (crypt/encrypt password)))
 
