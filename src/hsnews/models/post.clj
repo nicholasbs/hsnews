@@ -39,7 +39,7 @@
 (defn id->post [id]
   (fetch-by-id :posts (object-id id)))
 
-(defn view-url [{:keys [_id] :as post}]
+(defn post-url [{:keys [_id] :as post}]
   (str "/posts/" _id))
 
 (defn upvote-url [{:keys [_id]}]

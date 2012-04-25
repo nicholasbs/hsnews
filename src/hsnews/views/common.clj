@@ -33,7 +33,7 @@
 
 (defpartial comment-count [{:keys [_id] :as post}]
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
-              (link-to (posts/view-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
+              (link-to (posts/post-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
 
 (defpartial subtext [{:keys [ts author post_id] :as item}]
             [:div.subtext
