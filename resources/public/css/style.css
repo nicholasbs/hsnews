@@ -144,19 +144,33 @@ header .user .register::after{
   line-height: 200%;
 }
 
-a.upvote {
-  color: #828282;
+.title {
+  position: relative;
+  height: 15px;
+  display: inline-block;
+  font-size: 10pt;
+}
+
+.indicator {
+  position: absolute;
+  left: -3px;
   width: 13px;
   height: 15px;
-  padding-top: 4px;
-  margin-left:-3px;
+}
+
+.postPage .indicator {
+  left: -13px;
+}
+
+a.upvote {
+  bottom: -4px;
+  color: #828282;
   font-size: 7pt;
   font-family: Arial;
 }
 
-.postPage a.upvote {
-  padding-right: 3px;
-  margin-left: -13px;
+.isAuthor{
+  color: #00e837;
 }
 
 .disclaimer {
@@ -200,11 +214,8 @@ ol.commentList li .commentBody {
   padding-top: 60px;
 }
 
-.postPage h1 {
-  font-size: 10pt;
+.postPage .title {
   padding-top: 6px;
-  height: 15px;
-  display: inline-block;
 }
 
 ol.postList {
@@ -219,13 +230,9 @@ ol.postList li {
   height: 34px;
 }
 
-ol.postList .title {
-  height: 15px;
-  display: inline-block;
-}
 
 ol.postList .title a.postLink {
-  margin-left: 3px;
+  margin-left: 9px;
 }
 
 .domain {
@@ -263,7 +270,7 @@ ol.userList {
 }
 
 .post .subtext {
-  padding-left: 27px;
+  padding-left: 29px;
   margin-top: -3px;
 }
 

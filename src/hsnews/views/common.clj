@@ -29,7 +29,8 @@
 
 (defpartial upvote-link [post]
   (if-not (posts/voted? post)
-    (link-to {:class "upvote"} (posts/upvote-url post) "&#9650;")))
+    (link-to {:class "upvote indicator"} (posts/upvote-url post) "&#9650;")
+    (if (posts/is-author? post) [:span.isAuthor.indicator "*"])))
 
 
 (defpartial comment-count [{:keys [_id] :as post}]
@@ -59,7 +60,7 @@
 (defpartial post-item [{:keys [link title author ts] :as post}]
             (when post
              [:li.post
-              [:div.title
+              [:h3.title
                 (upvote-link post)
                 (link-to {:class "postLink"} link title)
                 [:span.domain "(" (extract-domain-from-url link) ")"]]

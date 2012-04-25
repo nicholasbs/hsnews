@@ -31,6 +31,9 @@
   (when (valid? post)
     (insert! :posts (prepare-new post))))
 
+(defn is-author? [{:keys [author]}]
+  (= author (users/current-user)))
+
 (defn voted? [{:keys [voters]}]
   (and (not-empty voters) (not= (.indexOf voters (users/current-user)) -1)))
 
