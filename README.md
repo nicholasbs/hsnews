@@ -1,13 +1,13 @@
 # hsnews
 
-A Hacker News clone written in Noir.
+A [Hacker News](http://news.ycombinator.com) clone written in [Clojure](http://clojure.org) using [Noir](http://webnoir.org).
+
+Created for [Hacker School](http://hackerschool.com) batch[2].
 
 ## Usage
 
-```bash
-lein deps
-lein run
-```
+    lein deps
+    lein run
 
 ## License
 
