@@ -28,7 +28,8 @@
   (link-to (str "/users/" username) username))
 
 (defpartial upvote-link [post]
-  (link-to {:class "upvote"} (posts/upvote-url post) "&#9650;"))
+  (if-not (posts/voted? post)
+    (link-to {:class "upvote"} (posts/upvote-url post) "&#9650;")))
 
 
 (defpartial comment-count [{:keys [_id] :as post}]

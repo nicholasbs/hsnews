@@ -24,9 +24,19 @@
       (assoc :ts (coerce/to-long ts))
       (assoc :author (users/current-user)))))
 
+(defn id->post [id]
+  (fetch-by-id :posts (object-id id)))
+
 (defn add! [post]
   (when (valid? post)
     (insert! :posts (prepare-new post))))
+
+(defn voted? [{:keys [voters]}]
+  (and (not-empty voters) (not= (.indexOf voters (users/current-user)) -1)))
+
+(defn upvote! [post]
+  (if-not (voted? post)
+    (update! :posts post {:$inc {:points 1} :$push {:voters (users/current-user)}})))
 
 (defn get-page [page]
   (let [page-num (dec (Integer. page))
@@ -35,9 +45,6 @@
 
 (defn get-latest []
   (get-page 1))
-
-(defn id->post [id]
-  (fetch-by-id :posts (object-id id)))
 
 (defn post-url [{:keys [_id] :as post}]
   (str "/posts/" _id))

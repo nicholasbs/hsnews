@@ -78,3 +78,9 @@
             (resp/redirect post_url) ; should redirect to post page
             (render post_url {:_id (.toString post_id)} comment))))
 
+; Upvoting
+(defpage "/posts/:_id/upvote" {:keys [_id]}
+         (let [post (posts/id->post _id)]
+          (if (posts/upvote! post)
+            (resp/redirect (posts/post-url post))
+            (resp/redirect (posts/post-url post)))))
