@@ -129,8 +129,7 @@ header .user {
   line-height: 24px;
 }
 
-header .user .username::after,
-header .user .register::after{
+header .user .username::after {
   content: ' | ';
 }
 

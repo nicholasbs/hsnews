@@ -23,6 +23,8 @@
                        (users/current-user)
                        (= uri "/login")
                        (= uri "/sessions/create")
+                       ;(= uri "/register") ;; uncomment to allow registration
+                       ;(= uri "/users/create") ;; uncomment to allow registration
                        (re-find #"^/(css)|(img)|(js)|(favicon)" uri))
             (session/flash-put! (get-request-uri))
             (resp/redirect "/login")))
@@ -103,7 +105,7 @@
                       [:span.username (user-link username) " (" (users/get-karma username) ")"]
                       (link-to "/logout" "log out")]
                     [:div.user.loggedout
-                      (link-to {:class "register"} "/register" "register")
+                      ;(link-to "/register" "register") ;; Uncomment to allow registration
                       (link-to "/login" "log in")]))]
                 [:div#content content]
                 [:footer
