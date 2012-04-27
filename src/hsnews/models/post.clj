@@ -24,30 +24,52 @@
       (assoc :ts (coerce/to-long ts))
       (assoc :author (users/current-user))
       (assoc :points 1)
-      (assoc :voters {(users/current-user) true}))))
-
+      (assoc :score 1.0)
+      (assoc :voters {(users/current-user) true})
+      (assoc :last-updated (coerce/to-long ts)))))
 
 (defn id->post [id]
   (fetch-by-id :posts (object-id id)))
 
-(defn add! [post]
-  (when (valid? post)
-    (insert! :posts (prepare-new post))))
+;Decay
+(defn get-posts-to-decay []
+  (let [ts (ctime/now) fivemin 300000]
+    (fetch :posts :where {:last-updated {:$lte (- (coerce/to-long ts) fivemin)}})))
+
+(defn decay-post [{:keys [score] :as post}]
+  (println "decaying")
+  (let [multiplier 0.9 ts (ctime/now)]
+    (update! :posts
+             post
+             {:$set {:score (* multiplier score) :last-updated (coerce/to-long ts)}})))
+
+(defn decay! []
+  (doall (map decay-post (get-posts-to-decay))))
 
 (defn is-author? [{:keys [author]}]
   (= author (users/current-user)))
+
+(defn add! [post]
+  (when (valid? post)
+    (do
+      (insert! :posts (prepare-new post))
+      (decay!))))
 
 (defn voted? [{:keys [voters]}]
   (contains? voters (keyword (users/current-user))))
 
 (defn upvote! [post]
   (if-not (voted? post)
-    (update! :posts post {:$inc {:points 1} :$set {(str "voters." (users/current-user)) true}})))
+    (do
+      (update! :posts
+               post
+               {:$inc {:points 1 :score 1} :$set {(str "voters." (users/current-user)) true}})
+      (decay!))))
 
 (defn get-page [page]
   (let [page-num (dec (Integer. page))
         skip (* page-num posts-per-page)]
-    (fetch :posts :limit posts-per-page :skip skip :sort {:ts -1})))
+    (fetch :posts :limit posts-per-page :skip skip :sort {:score -1})))
 
 (defn get-latest []
   (get-page 1))

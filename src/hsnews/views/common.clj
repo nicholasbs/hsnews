@@ -32,10 +32,9 @@
   (if-not (posts/voted? post)
     (link-to {:class "upvote indicator"} (posts/upvote-url post) "&#9650;")))
 
-
-(defpartial comment-count [{:keys [_id] :as post}]
+(defpartial comment-count [{:keys [_id score] :as post}]
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
-              (link-to (posts/post-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
+              (link-to {:title score} (posts/post-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
 
 (defpartial subtext [{:keys [ts author points post_id] :as item}]
             [:div.subtext
