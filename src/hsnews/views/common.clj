@@ -28,9 +28,9 @@
   (link-to (str "/users/" username) username))
 
 (defpartial upvote-link [post]
+  (if (posts/is-author? post) [:span.isAuthor.indicator "*"])
   (if-not (posts/voted? post)
-    (link-to {:class "upvote indicator"} (posts/upvote-url post) "&#9650;")
-    (if (posts/is-author? post) [:span.isAuthor.indicator "*"])))
+    (link-to {:class "upvote indicator"} (posts/upvote-url post) "&#9650;")))
 
 
 (defpartial comment-count [{:keys [_id] :as post}]
@@ -67,8 +67,9 @@
               (subtext post)]))
 
 (defpartial post-list [items]
-            [:ol.postList
-             (map post-item items)])
+            (if (not-empty items)
+              [:ol.postList (map post-item items)]
+              [:div.empty "No posts"]))
 
 (defpartial error-text [errors]
             [:span.error (string/join " " errors)])

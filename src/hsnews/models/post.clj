@@ -22,7 +22,10 @@
   (let [ts (ctime/now)]
     (-> post
       (assoc :ts (coerce/to-long ts))
-      (assoc :author (users/current-user)))))
+      (assoc :author (users/current-user))
+      (assoc :points 1)
+      (assoc :voters {(users/current-user) true}))))
+
 
 (defn id->post [id]
   (fetch-by-id :posts (object-id id)))
@@ -35,11 +38,11 @@
   (= author (users/current-user)))
 
 (defn voted? [{:keys [voters]}]
-  (and (not-empty voters) (not= (.indexOf voters (users/current-user)) -1)))
+  (contains? voters (keyword (users/current-user))))
 
 (defn upvote! [post]
   (if-not (voted? post)
-    (update! :posts post {:$inc {:points 1} :$push {:voters (users/current-user)}})))
+    (update! :posts post {:$inc {:points 1} :$set {(str "voters." (users/current-user)) true}})))
 
 (defn get-page [page]
   (let [page-num (dec (Integer. page))
