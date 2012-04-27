@@ -81,6 +81,6 @@
 ; Upvoting
 (defpage "/posts/:_id/upvote" {:keys [_id]}
          (let [post (posts/id->post _id)]
-          (if (posts/upvote! post)
-            (resp/redirect (posts/post-url post))
-            (resp/redirect (posts/post-url post)))))
+          (do
+            (posts/upvote! post)
+            (resp/redirect (or (common/get-referer) (posts/post-url post))))))

@@ -37,7 +37,6 @@
     (fetch :posts :where {:last-updated {:$lte (- (coerce/to-long ts) fivemin)}})))
 
 (defn decay-post [{:keys [score] :as post}]
-  (println "decaying")
   (let [multiplier 0.9 ts (ctime/now)]
     (update! :posts
              post
