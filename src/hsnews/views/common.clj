@@ -37,8 +37,9 @@
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
               (link-to (posts/post-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
 
-(defpartial subtext [{:keys [ts author post_id] :as item}]
+(defpartial subtext [{:keys [ts author points post_id] :as item}]
             [:div.subtext
+              (if-not post_id [:span.points points " points"])
               [:span.author (user-link author)]
               [:span.date (tform/unparse date-format (coerce/from-long ts))]
               (if-not post_id [:span.commentCount (comment-count item)])])
