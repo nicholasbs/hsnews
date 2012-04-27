@@ -229,6 +229,10 @@ ol.postList li {
   height: 34px;
 }
 
+ol.postList li:nth-child(n+10) {
+  margin-left: -8px;
+}
+
 
 ol.postList .title a.postLink {
   margin-left: 9px;
