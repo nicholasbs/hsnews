@@ -51,9 +51,10 @@
                    (submit-button {:class "submit"} "create account"))))
 
 (defpage [:post "/sessions/create"] {:as user}
-         (if (users/login! user)
-           (resp/redirect "/")
-           (render "/login" user)))
+         (let [return-uri (session/flash-get)]
+           (if (users/login! user)
+             (resp/redirect (or return-uri "/"))
+             (render "/login" user))))
 
 (defpage [:post "/users/create"] {:as user}
          (if (users/add! user)

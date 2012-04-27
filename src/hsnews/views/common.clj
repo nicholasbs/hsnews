@@ -9,14 +9,22 @@
             [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
             [hsnews.models.user :as users]
-            [hsnews.models.post :as posts]))
+            [hsnews.models.post :as posts]
+            [noir.session :as session]))
+
+(defn get-request-uri []
+  (:uri (req/ring-request)))
+
+(defn get-referer []
+  ((:headers (req/ring-request)) "referer"))
 
 (pre-route "/*" {:keys [uri]}
-           (when-not (or 
+           (when-not (or
                        (users/current-user)
                        (= uri "/login")
                        (= uri "/sessions/create")
                        (re-find #"^/(css)|(img)|(js)|(favicon)" uri))
+            (session/flash-put! (get-request-uri))
             (resp/redirect "/login")))
 
 (def date-format (tform/formatter "MM/dd/yy" (ctime/default-time-zone)))
