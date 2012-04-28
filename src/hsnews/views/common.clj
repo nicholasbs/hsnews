@@ -10,6 +10,7 @@
             [clj-time.coerce :as coerce]
             [hsnews.models.user :as users]
             [hsnews.models.post :as posts]
+            [hsnews.models.comment :as comments]
             [noir.session :as session]))
 
 (defn get-request-uri []
@@ -37,25 +38,24 @@
 (defpartial user-link [username]
   (link-to (str "/users/" username) username))
 
-(defpartial upvote-link [post]
-  (if (posts/is-author? post) [:span.isAuthor.indicator "*"])
-  (if-not (posts/voted? post)
-    (link-to {:class "upvote indicator"} (posts/upvote-url post) "&#9650;")))
+(defpartial upvote-comment-link [com]
+  (if (comments/is-author? com) [:span.isAuthor.indicator "*"])
+  (if-not (comments/voted? com)
+    (link-to {:class "upvote indicator"} (comments/upvote-url com) "&#9650;")))
 
 (defpartial comment-count [{:keys [_id score] :as post}]
             (let [comment-count (fetch-count :comments :where {:post_id _id})]
               (link-to {:title score} (posts/post-url post) (str comment-count " comment" (if (not= comment-count 1) "s" "")))))
 
-(defpartial subtext [{:keys [ts author points post_id] :as item}]
-            [:div.subtext
-              (if-not post_id [:span.points points " points"])
+(defpartial comment-subtext [{:keys [ts author points post_id] :as com}]
+            [:div.subtext.comment
+              (upvote-comment-link com)
               [:span.author (user-link author)]
-              [:span.date (tform/unparse date-format (coerce/from-long ts))]
-              (if-not post_id [:span.commentCount (comment-count item)])])
+              [:span.date (tform/unparse date-format (coerce/from-long ts))]])
 
-(defpartial comment-item [{:keys [body] :as comment}]
+(defpartial comment-item [{:keys [body] :as com}]
             [:li
-             (subtext comment)
+             (comment-subtext com)
              [:div.commentBody body]])
 
 ; TODO Make this function less horrible and inefficient.
@@ -67,6 +67,18 @@
               [:ol.commentList
                (map comment-item comments)]))
 
+(defpartial upvote-link [post]
+  (if (posts/is-author? post) [:span.isAuthor.indicator "*"])
+  (if-not (posts/voted? post)
+    (link-to {:class "upvote indicator"} (posts/upvote-url post) "&#9650;")))
+
+(defpartial post-subtext [{:keys [ts author points] :as post}]
+            [:div.subtext
+              [:span.points points " points"]
+              [:span.author (user-link author)]
+              [:span.date (tform/unparse date-format (coerce/from-long ts))]
+              [:span.commentCount (comment-count post)]])
+
 (defpartial post-item [{:keys [link title author ts] :as post}]
             (when post
              [:li.post
@@ -74,7 +86,7 @@
                 (upvote-link post)
                 (link-to {:class "postLink"} link title)
                 [:span.domain "(" (extract-domain-from-url link) ")"]]
-              (subtext post)]))
+              (post-subtext post)]))
 
 (defpartial post-list [items]
             (if (not-empty items)

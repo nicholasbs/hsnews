@@ -80,7 +80,7 @@
   (str "/posts/" _id "/upvote"))
 
 (defn get-comments [{:keys [_id]}]
-  (fetch :comments :where {:post_id _id}))
+  (fetch :comments :where {:post_id _id} :sort {:points -1}))
 
 (defn get-by-user [username]
   (fetch :posts :where {:author username}))

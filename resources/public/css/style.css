@@ -268,6 +268,7 @@ ol.userList {
 }
 
 .subtext {
+  position: relative;
   font-size: 7pt;
   color: #828282;
 }
@@ -289,6 +290,15 @@ ol.userList {
 .subtext a:hover {
   text-decoration: underline;
 }
+
+.subtext a.upvote {
+  bottom: -1px;
+}
+
+.subtext a.upvote:hover {
+  text-decoration: none;
+}
+
 
 .subtext .points {
   padding-right: 4px;

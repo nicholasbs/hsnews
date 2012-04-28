@@ -5,6 +5,15 @@
             [clj-time.coerce :as coerce]
             [noir.validation :as vali]))
 
+(defn id->comment [id]
+  (fetch-by-id :comments (object-id id)))
+
+(defn upvote-url [{:keys [_id]}]
+  (str "/comments/" _id "/upvote"))
+
+(defn is-author? [{:keys [author]}]
+  (= author (users/current-user)))
+
 (defn valid? [{:keys [body]}]
   (vali/rule (vali/has-value? body)
              [:body "Please enter a thoughtful comment"])
@@ -17,8 +26,18 @@
     (-> comment
       (assoc :ts (coerce/to-long ts))
       (assoc :post_id (object-id (get comment :post_id)))
-      (assoc :author (users/current-user)))))
+      (assoc :author (users/current-user))
+      (assoc :points 1)
+      (assoc :voters {(users/current-user) true}))))
 
 (defn add! [comment]
   (when (valid? comment)
     (insert! :comments (prepare-new comment))))
+
+(defn voted? [{:keys [voters]}]
+  (contains? voters (keyword (users/current-user))))
+
+(defn upvote! [com]
+  (if-not (voted? com)
+    (update! :comments com {:$inc {:points 1} :$set {(str "voters." (users/current-user)) true}})))
+

@@ -63,7 +63,7 @@
                 (common/upvote-link post)
                 (link-to link title)
                 [:span.domain "(" (common/extract-domain-from-url link) ")"]]
-               (common/subtext post)
+               (common/post-subtext post)
                (comment-form comment post)
                (common/comment-list (posts/get-comments post))]))
 
@@ -84,3 +84,9 @@
           (do
             (posts/upvote! post)
             (resp/redirect (or (common/get-referer) (posts/post-url post))))))
+
+(defpage "/comments/:_id/upvote" {:keys [_id]}
+         (let [com (comments/id->comment _id)]
+          (do
+            (comments/upvote! com)
+            (resp/redirect (or (common/get-referer) "/")))))
