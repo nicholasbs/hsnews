@@ -57,12 +57,13 @@
 (defn voted? [{:keys [voters]}]
   (contains? voters (keyword (users/current-user))))
 
-(defn upvote! [post]
+(defn upvote! [{:keys [author] :as post}]
   (if-not (voted? post)
     (do
       (update! :posts
                post
                {:$inc {:points 1 :score 1} :$set {(str "voters." (users/current-user)) true}})
+      (update! :users (fetch-one :users :where {:username author}) {:$inc {:karma 1}})
       (decay!))))
 
 (defn get-page [page]

@@ -16,10 +16,13 @@
 (defn get-posts [username]
   (fetch :posts :where {:author username}))
 
-(defn get-karma [username] 0)
+(defn get-karma [username]
+  (int (:karma (fetch-one :users :where {:username username}))))
 
 (defn prepare [{password :password :as user}]
-  (assoc user :password (crypt/encrypt password)))
+  (-> user
+    (assoc :password (crypt/encrypt password))
+    (assoc :karma 0)))
 
 (defn valid-username? [username]
   (vali/rule (not (fetch-one :users :where {:username username}))

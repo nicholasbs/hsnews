@@ -21,23 +21,30 @@
              [:body "Comments can be at most 65,536 characters long"])
   (not (vali/errors? :body)))
 
-(defn prepare-new [comment]
+(defn prepare-new [com]
   (let [ts (ctime/now)]
-    (-> comment
+    (-> com
       (assoc :ts (coerce/to-long ts))
-      (assoc :post_id (object-id (get comment :post_id)))
+      (assoc :post_id (object-id (get com :post_id)))
       (assoc :author (users/current-user))
       (assoc :points 1)
       (assoc :voters {(users/current-user) true}))))
 
-(defn add! [comment]
-  (when (valid? comment)
-    (insert! :comments (prepare-new comment))))
+(defn add! [com]
+  (when (valid? com)
+    (insert! :comments (prepare-new com))))
 
 (defn voted? [{:keys [voters]}]
   (contains? voters (keyword (users/current-user))))
 
-(defn upvote! [com]
+(defn upvote! [{:keys [author] :as com}]
   (if-not (voted? com)
-    (update! :comments com {:$inc {:points 1} :$set {(str "voters." (users/current-user)) true}})))
+    (do
+      (update! :comments
+               com
+               {:$inc {:points 1} :$set {(str "voters." (users/current-user)) true}})
+      (update! :users
+               (fetch-one :users :where {:username author})
+               {:$inc {:karma 1}}))))
+
 
