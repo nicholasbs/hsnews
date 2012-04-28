@@ -157,7 +157,8 @@ header .user .username::after {
   height: 15px;
 }
 
-.postPage .indicator {
+.postPage .indicator,
+.subtext.comment .indicator {
   left: -13px;
 }
 
