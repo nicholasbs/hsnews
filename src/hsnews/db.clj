@@ -6,10 +6,9 @@
 (def local-fallback-mongo )
 
 (defn get-dotcloud-config []
-  (try
-    ((read-json (slurp "/home/dotcloud/environment.json")
-               :DOTCLOUD_DATA_MONGODB_URL))
-    (catch Exception e nil))) ; silently fail when running locally
+    (try
+      ((read-json (slurp "/home/dotcloud/environment.json")) :DATA_MONGODB_URL)
+      (catch Exception e (println e))))
 
 ; Taken from http://thecomputersarewinning.com/post/clojure-heroku-noir-mongo/
 (defn split-mongo-url [url]
