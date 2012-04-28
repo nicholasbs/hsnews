@@ -1,5 +1,7 @@
 pom.xml
 *jar
+*.war
 /lib/
 /classes/
 .lein-deps-sum
+.lein-plugins
