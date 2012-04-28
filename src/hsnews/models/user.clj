@@ -1,6 +1,8 @@
 (ns hsnews.models.user
   (:use somnium.congomongo)
-  (:require [noir.util.crypt :as crypt]
+  (:require [clj-time.core :as ctime]
+            [clj-time.coerce :as coerce]
+            [noir.util.crypt :as crypt]
             [noir.validation :as vali]
             [noir.session :as session]))
 
@@ -20,9 +22,11 @@
   (int (:karma (fetch-one :users :where {:username username}))))
 
 (defn prepare [{password :password :as user}]
-  (-> user
-    (assoc :password (crypt/encrypt password))
-    (assoc :karma 0)))
+  (let [ts (ctime/now)]
+    (-> user
+      (assoc :ts (coerce/to-long ts))
+      (assoc :password (crypt/encrypt password))
+      (assoc :karma 0))))
 
 (defn valid-username? [username]
   (vali/rule (not (fetch-one :users :where {:username username}))

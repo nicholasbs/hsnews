@@ -17,13 +17,26 @@
     (when (.find matcher) ;; Check if it matches.
       (zipmap [:match :user :pass :host :port :db] (re-groups matcher))))) ;; Construct an options map.
 
+(defn create-posts-collection! []
+  (create-collection! :posts)
+  (add-index! :posts [:ts :score :last-updated :author]))
+
+(defn create-comments-collection! []
+  (create-collection! :comments)
+  (add-index! :comments [:post_id :parent_id :author :points :ts]))
+
+(defn create-users-collection! []
+  (create-collection! :users)
+  (add-index! :users [:username]))
+
 (defn maybe-init []
-  "Checks if connection and collection exist, otherwise initialize."
+  "Checks if connection and collections exist, otherwise initialize."
   (when (not (connection? *mongo-config*)) ;; If global connection doesn't exist yet.
     (let [config (split-mongo-url (or
                                     (get-dotcloud-config)
                                     "mongodb://:@localhost:27017/hsnews"))]
-      (mongo! :db (:db config) :host (:host config) :port (Integer. (:port config))) ;; Setup global mongo.
-      (authenticate (:user config) (:pass config)) ;; Setup u/p.
-      (or (collection-exists? :posts) ;; Create collection named 'firstcollection' if it doesn't exist.
-    (create-collection! :posts)))))
+      (mongo! :db (:db config) :host (:host config) :port (Integer. (:port config)))
+      (authenticate (:user config) (:pass config))
+      (or (collection-exists? :posts) (create-posts-collection!))
+      (or (collection-exists? :comments) (create-comments-collection!))
+      (or (collection-exists? :users) (create-users-collection!)))))
