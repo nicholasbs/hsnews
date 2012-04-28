@@ -66,20 +66,24 @@
          (resp/redirect "/"))
 
 (defpage "/users/:username" {:keys [username]}
-         (common/layout
-           [:ul.userFields
-            [:li
-              [:span.label "user:"]
-              username]
-            [:li ; TODO add timestamp for created
-              [:span.label "link:"]
-             (hs-link username)]
-            [:li
-             [:span.label " "]
-             (posts-link username "submissions")]
-            [:li
-             [:span.label " "]
-             (comments-link username "comments")]]))
+         (let [user (users/get-user username)]
+           (common/layout
+             [:ul.userFields
+              [:li
+               [:span.label "user:"]
+               username]
+              [:li
+               [:span.label "created:"]
+               (common/time-ago (:ts user))]
+              [:li
+               [:span.label "link:"]
+               (hs-link username)]
+              [:li
+               [:span.label " "]
+               (posts-link username "submissions")]
+              [:li
+               [:span.label " "]
+               (comments-link username "comments")]])))
 
 (defpage "/users/:username/comments" {:keys [username]}
          (common/layout

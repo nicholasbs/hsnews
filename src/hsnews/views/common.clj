@@ -30,18 +30,19 @@
             (resp/redirect "/login")))
 
 (defn time-ago [ts]
-  (let [now (ctime/now) 
-        diff (- (coerce/to-long now) ts) 
-        oneday 86400000 
-        onehour 3600000 
-        oneminute 60000]
-    (cond
-      (> diff (* oneday 2)) (str (quot diff oneday) " days ago")
-      (> diff oneday) (str (quot diff oneday) " day ago")
-      (> diff (* onehour 2)) (str (quot diff onehour) " hours ago")
-      (> diff onehour) (str (quot diff onehour) " hour ago")
-      (> diff (* oneminute 2)) (str (quot diff oneminute) " minutes ago")
-      (<= diff (* oneminute 2)) "1 minute ago")))
+  (if ts
+    (let [now (ctime/now)
+          diff (- (coerce/to-long now) ts)
+          oneday 86400000
+          onehour 3600000
+          oneminute 60000]
+      (cond
+        (> diff (* oneday 2)) (str (quot diff oneday) " days ago")
+        (> diff oneday) (str (quot diff oneday) " day ago")
+        (> diff (* onehour 2)) (str (quot diff onehour) " hours ago")
+        (> diff onehour) (str (quot diff onehour) " hour ago")
+        (> diff (* oneminute 2)) (str (quot diff oneminute) " minutes ago")
+        (<= diff (* oneminute 2)) "1 minute ago"))))
 
 (defn extract-domain-from-url [url]
   (second (re-find #"^(?:[^:/]*://)?(?:www\.)?([^/\?]+)(?:.*)$" url)))
