@@ -234,6 +234,9 @@ ol.postList li:nth-child(n+10) {
   margin-left: -8px;
 }
 
+ol.postList li:nth-child(n+10) .subtext {
+  padding-left: 37px;
+}
 
 ol.postList .title a.postLink {
   margin-left: 9px;
