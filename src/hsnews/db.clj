@@ -1,6 +1,15 @@
 (ns hsnews.db
   (:use somnium.congomongo
-        [somnium.congomongo.config :only [*mongo-config*]]))
+        [somnium.congomongo.config :only [*mongo-config*]]
+        [clojure.data.json :only [read-json]]))
+
+(def local-fallback-mongo )
+
+(defn get-dotcloud-config []
+  (try
+    ((read-json (slurp "/home/dotcloud/environment.json")
+               :DOTCLOUD_DATA_MONGODB_URL))
+    (catch Exception e nil))) ; silently fail when running locally
 
 ; Taken from http://thecomputersarewinning.com/post/clojure-heroku-noir-mongo/
 (defn split-mongo-url [url]
@@ -12,9 +21,9 @@
 (defn maybe-init []
   "Checks if connection and collection exist, otherwise initialize."
   (when (not (connection? *mongo-config*)) ;; If global connection doesn't exist yet.
-    (let [mongo-url "mongodb://:@localhost:27017/hsnews" ;(get (System/getenv) "MONGOHQ_URL") ;; Heroku puts it here.
-    config    (split-mongo-url mongo-url)] ;; Extract options.
-      (println "Initializing mongo @ " mongo-url)
+    (let [config (split-mongo-url (or
+                                    (get-dotcloud-config)
+                                    "mongodb://:@localhost:27017/hsnews"))]
       (mongo! :db (:db config) :host (:host config) :port (Integer. (:port config))) ;; Setup global mongo.
       (authenticate (:user config) (:pass config)) ;; Setup u/p.
       (or (collection-exists? :posts) ;; Create collection named 'firstcollection' if it doesn't exist.
