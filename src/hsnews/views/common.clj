@@ -120,7 +120,7 @@
                  [:h1#logo
                   (link-to "/" "Hacker School News")]
                  [:ul 
-                  [:li (link-to "/" "new")]
+                  [:li (link-to "/newest" "new")]
                   [:li (link-to "http://www.hackruiter.com/companies" "jobs")]
                   [:li (link-to "/submit" "submit")]]
                  (let [hs_id (users/current-user)]

@@ -25,7 +25,11 @@
 ; Main view
 (defpage "/" []
          (common/layout
-           (common/post-list (posts/get-latest))))
+           (common/post-list (posts/get-top))))
+
+(defpage "/newest" []
+         (common/layout
+           (common/post-list (posts/get-newest))))
 
 ; New submission view
 (defpage "/submit" {:as post}

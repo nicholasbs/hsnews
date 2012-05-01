@@ -66,13 +66,16 @@
       (update! :users (fetch-one :users :where {:hs_id author}) {:$inc {:karma 1}})
       (decay!))))
 
-(defn get-page [page]
+(defn get-page [page sort-options]
   (let [page-num (dec (Integer. page))
         skip (* page-num posts-per-page)]
-    (fetch :posts :limit posts-per-page :skip skip :sort {:score -1})))
+    (fetch :posts :limit posts-per-page :skip skip :sort sort-options)))
 
-(defn get-latest []
-  (get-page 1))
+(defn get-top []
+  (get-page 1 {:score -1}))
+
+(defn get-newest []
+  (get-page 1 {:ts -1}))
 
 (defn post-url [{:keys [_id] :as post}]
   (str "/posts/" _id))
