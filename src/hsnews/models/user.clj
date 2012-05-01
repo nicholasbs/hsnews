@@ -1,6 +1,7 @@
 (ns hsnews.models.user
   (:use somnium.congomongo
-        [clojure.data.json :only [read-json]])
+        [clojure.data.json :only [read-json]]
+        [hsnews.utils :only [auth-url]])
   (:require [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
             [clj-http.client :as client]
@@ -69,7 +70,7 @@
   (session/put! :hs_id hs_id))
 
 (defn login! [{:keys [username password]}]
-  (let [request-url "http://localhost:4000/auth"
+  (let [request-url auth-url
         resp (client/post request-url {:throw-exceptions false :form-params {:email username :password password}})]
     (if (= 200 (resp :status))
       (let [resp-data (read-json (resp :body))
