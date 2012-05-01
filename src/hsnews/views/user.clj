@@ -81,6 +81,9 @@
                [:span.label "created:"]
                (common/time-ago (:ts user))]
               [:li
+               [:span.label "karma"]
+               (users/get-karma hs_id)]
+              [:li
                [:span.label "link:"]
                (hs-link hs_id)]
               [:li
