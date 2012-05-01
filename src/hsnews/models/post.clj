@@ -63,7 +63,7 @@
       (update! :posts
                post
                {:$inc {:points 1 :score 1} :$set {(str "voters." (users/current-user)) true}})
-      (update! :users (fetch-one :users :where {:username author}) {:$inc {:karma 1}})
+      (update! :users (fetch-one :users :where {:hs_id author}) {:$inc {:karma 1}})
       (decay!))))
 
 (defn get-page [page]
@@ -83,5 +83,5 @@
 (defn get-comments [{:keys [_id]}]
   (fetch :comments :where {:post_id _id} :sort {:points -1}))
 
-(defn get-by-user [username]
-  (fetch :posts :where {:author username}))
+(defn get-by-user [hs_id]
+  (fetch :posts :where {:author hs_id}))

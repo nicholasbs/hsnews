@@ -47,8 +47,8 @@
 (defn extract-domain-from-url [url]
   (second (re-find #"^(?:[^:/]*://)?(?:www\.)?([^/\?]+)(?:.*)$" url)))
 
-(defpartial user-link [username]
-  (link-to (str "/users/" username) username))
+(defpartial user-link [hs_id]
+  (link-to (str "/users/" hs_id) (users/get-username hs_id)))
 
 (defpartial upvote-comment-link [com]
   (if (comments/is-author? com) [:span.isAuthor.indicator "*"])
@@ -123,10 +123,10 @@
                   [:li (link-to "/" "new")]
                   [:li (link-to "http://www.hackruiter.com/companies" "jobs")]
                   [:li (link-to "/submit" "submit")]]
-                 (let [username (users/current-user)]
-                  (if username
+                 (let [hs_id (users/current-user)]
+                  (if hs_id
                     [:div.user.loggedin
-                      [:span.username (user-link username) " (" (users/get-karma username) ")"]
+                      [:span.username (user-link hs_id) " (" (users/get-karma hs_id) ")"]
                       (link-to "/logout" "log out")]
                     [:div.user.loggedout
                       ;(link-to "/register" "register") ;; Uncomment to allow registration

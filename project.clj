@@ -3,6 +3,7 @@
             :dependencies [[org.clojure/clojure "1.3.0"]
                            [org.clojure/data.json "0.1.2"]
                            [noir "1.2.1"]
+                           [clj-http "0.4.0"]
                            [congomongo "0.1.9"]
                            [clj-time "0.4.1"]]
             :plugins      [[lein-ring "0.6.6"]]

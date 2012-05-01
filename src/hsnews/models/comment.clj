@@ -11,8 +11,8 @@
 (defn upvote-url [{:keys [_id]}]
   (str "/comments/" _id "/upvote"))
 
-(defn is-author? [{:keys [author]}]
-  (= author (users/current-user)))
+(defn is-author? [{:keys [hs_id]}]
+  (= hs_id (users/current-user)))
 
 (defn valid? [{:keys [body]}]
   (vali/rule (vali/has-value? body)
@@ -44,7 +44,7 @@
                com
                {:$inc {:points 1} :$set {(str "voters." (users/current-user)) true}})
       (update! :users
-               (fetch-one :users :where {:username author})
+               (fetch-one :users :where {:hs_id author})
                {:$inc {:karma 1}}))))
 
 

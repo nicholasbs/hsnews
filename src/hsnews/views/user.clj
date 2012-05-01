@@ -9,16 +9,20 @@
             [hsnews.models.post :as posts]
             [hsnews.views.common :as common]))
 
-(defpartial hs-link [username & [title]]
-            (let [title (if title title username)]
-              (link-to (str "https://www.hackerschool.com/private/" username) title))) ; TODO get correct URL from HS API
+(defpartial hs-link [hs_id & [title]]
+            (let [username (users/get-username hs_id)
+                  title (if title title username)]
+              (link-to (str "https://www.hackerschool.com/people/" hs_id) title)))
 
-(defpartial comments-link [username & [title]]
-            (let [link-title (if title title username)]
-              (link-to (str "/users/" username "/comments") title)))
-(defpartial posts-link [username & [title]]
-            (let [link-title (if title title username)]
-              (link-to (str "/users/" username "/posts") title)))
+(defpartial comments-link [hs_id & [title]]
+            (let [username (users/get-username hs_id)
+                  title (if title title username)]
+              (link-to (str "/users/" hs_id "/comments") title)))
+
+(defpartial posts-link [hs_id & [title]]
+            (let [username (users/get-username hs_id)
+                  title (if title title username)]
+              (link-to (str "/users/" hs_id "/posts") title)))
 
 (defpartial user-fields [{:keys [username] :as user}]
             [:ul.userForm
@@ -29,8 +33,8 @@
               (password-field {:placeholder "Password"} :password)
               (vali/on-error :password common/error-text)]])
 
-(defpartial user-item [{:keys [username] :as user}]
-            [:li (common/user-link username)])
+(defpartial user-item [{:keys [hs_id] :as user}]
+            [:li (common/user-link hs_id)])
 
 (defpartial list-users [users]
             [:ol.userList
@@ -65,8 +69,9 @@
          (session/clear!)
          (resp/redirect "/"))
 
-(defpage "/users/:username" {:keys [username]}
-         (let [user (users/get-user username)]
+(defpage "/users/:hs_id" {:keys [hs_id]}
+         (let [user (users/get-user hs_id)
+               username (user :username)]
            (common/layout
              [:ul.userFields
               [:li
@@ -77,23 +82,23 @@
                (common/time-ago (:ts user))]
               [:li
                [:span.label "link:"]
-               (hs-link username)]
+               (hs-link hs_id)]
               [:li
                [:span.label " "]
-               (posts-link username "submissions")]
+               (posts-link hs_id "submissions")]
               [:li
                [:span.label " "]
-               (comments-link username "comments")]])))
+               (comments-link hs_id "comments")]])))
 
-(defpage "/users/:username/comments" {:keys [username]}
+(defpage "/users/:hs_id" {:keys [hs_id]}
          (common/layout
            [:h2 "Comments"]
-            (common/comment-list (users/get-comments username))))
+            (common/comment-list (users/get-comments hs_id))))
 
-(defpage "/users/:username/posts" {:keys [username]}
+(defpage "/users/:hs_id/posts" {:keys [hs_id]}
          (common/layout
            [:h2 "Submissions"]
-            (common/post-list (users/get-posts username))))
+            (common/post-list (users/get-posts hs_id))))
 
 (defpage "/lists" {}
          (common/layout
