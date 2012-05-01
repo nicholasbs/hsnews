@@ -49,8 +49,8 @@
              [:password "Password must be at least 8 characters."])
   (not (vali/errors? :password)))
 
-(defn get-all-users []
-  (fetch :users))
+(defn get-top-users []
+  (fetch :users :sort {:karma -1} :limit 100))
 
 (defn store! [user]
   (update! :users user user))

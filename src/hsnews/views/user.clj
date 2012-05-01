@@ -105,5 +105,5 @@
 
 (defpage "/lists" {}
          (common/layout
-           [:h2 "All Users"]
-            (list-users (users/get-all-users))))
+           [:h2 "Top Users"]
+            (list-users (users/get-top-users))))
