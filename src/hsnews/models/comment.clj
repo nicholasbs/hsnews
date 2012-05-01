@@ -11,8 +11,8 @@
 (defn upvote-url [{:keys [_id]}]
   (str "/comments/" _id "/upvote"))
 
-(defn is-author? [{:keys [hs_id]}]
-  (= hs_id (users/current-user)))
+(defn is-author? [{:keys [author]}]
+  (= author (users/current-user)))
 
 (defn valid? [{:keys [body]}]
   (vali/rule (vali/has-value? body)
