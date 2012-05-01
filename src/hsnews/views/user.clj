@@ -7,7 +7,8 @@
             [noir.validation :as vali]
             [hsnews.models.user :as users]
             [hsnews.models.post :as posts]
-            [hsnews.views.common :as common]))
+            [hsnews.views.common :as common]
+            [hsnews.utils :as utils]))
 
 (defpartial hs-link [hs_id & [title]]
             (let [username (users/get-username hs_id)
@@ -79,7 +80,7 @@
                username]
               [:li
                [:span.label "created:"]
-               (common/time-ago (:ts user))]
+               (utils/time-ago (:ts user))]
               [:li
                [:span.label "karma"]
                (users/get-karma hs_id)]

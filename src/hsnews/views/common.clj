@@ -5,12 +5,11 @@
   (:require [clojure.string :as string]
             [noir.response :as resp]
             [noir.request :as req]
-            [clj-time.core :as ctime]
-            [clj-time.coerce :as coerce]
             [hsnews.models.user :as users]
             [hsnews.models.post :as posts]
             [hsnews.models.comment :as comments]
-            [noir.session :as session]))
+            [noir.session :as session]
+            [hsnews.utils :as utils]))
 
 (defn get-request-uri []
   (:uri (req/ring-request)))
@@ -28,21 +27,6 @@
                        (re-find #"^/(css)|(img)|(js)|(favicon)" uri))
             (session/flash-put! (get-request-uri))
             (resp/redirect "/login")))
-
-(defn time-ago [ts]
-  (if ts
-    (let [now (ctime/now)
-          diff (- (coerce/to-long now) ts)
-          oneday 86400000
-          onehour 3600000
-          oneminute 60000]
-      (cond
-        (> diff (* oneday 2)) (str (quot diff oneday) " days ago")
-        (> diff oneday) (str (quot diff oneday) " day ago")
-        (> diff (* onehour 2)) (str (quot diff onehour) " hours ago")
-        (> diff onehour) (str (quot diff onehour) " hour ago")
-        (> diff (* oneminute 2)) (str (quot diff oneminute) " minutes ago")
-        (<= diff (* oneminute 2)) "1 minute ago"))))
 
 (defn extract-domain-from-url [url]
   (second (re-find #"^(?:[^:/]*://)?(?:www\.)?([^/\?]+)(?:.*)$" url)))
@@ -63,7 +47,7 @@
             [:div.subtext.comment
               (upvote-comment-link com)
               [:span.author (user-link author)]
-              [:span.date (time-ago ts)]])
+              [:span.date (utils/time-ago ts)]])
 
 (defpartial comment-item [{:keys [body] :as com}]
             [:li
@@ -88,7 +72,7 @@
             [:div.subtext
               [:span.points points " points"]
               [:span.author (user-link author)]
-              [:span.date (time-ago ts)]
+              [:span.date (utils/time-ago ts)]
               [:span.commentCount (comment-count post)]])
 
 (defpartial post-item [{:keys [link title author ts] :as post}]
