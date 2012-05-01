@@ -1,6 +1,7 @@
 (ns hsnews.models.user
   (:use somnium.congomongo
         [clojure.data.json :only [read-json]]
+        [clojure.string :only [blank?]]
         [hsnews.utils :only [auth-url]])
   (:require [clj-time.core :as ctime]
             [clj-time.coerce :as coerce]
@@ -54,13 +55,20 @@
 (defn store! [user]
   (update! :users user user))
 
+(defn determine-username [{:keys [twitter github irc email hs_id] :as user}]
+  (cond (not (blank? twitter)) twitter
+        (not (blank? github)) github
+        (not (blank? irc)) irc
+        (not (blank? email)) email
+        :else hs_id))
+
 (defn get-or-create-user! [{:keys [hs_id twitter] :as user}]
   (let [existing (fetch-one :users :where {:hs_id hs_id})]
     (if existing
       (store! (merge existing user))
       (let [ts (ctime/now)
             new-user (-> user
-                       (assoc :username twitter)
+                       (assoc :username (determine-username user))
                        (assoc :karma 0)
                        (assoc :ts (coerce/to-long ts)))]
 

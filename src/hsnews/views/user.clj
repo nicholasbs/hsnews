@@ -90,7 +90,7 @@
                [:span.label " "]
                (comments-link hs_id "comments")]])))
 
-(defpage "/users/:hs_id" {:keys [hs_id]}
+(defpage "/users/:hs_id/comments" {:keys [hs_id]}
          (common/layout
            [:h2 "Comments"]
             (common/comment-list (users/get-comments hs_id))))
