@@ -34,13 +34,6 @@
               (password-field {:placeholder "Password"} :password)
               (vali/on-error :password common/error-text)]])
 
-(defpartial user-item [{:keys [hs_id] :as user}]
-            [:li (common/user-link hs_id)])
-
-(defpartial list-users [users]
-            [:ol.userList
-             (map user-item users)])
-
 (defpage "/login" {:as user}
          (common/layout
           [:h2 "Log in"]
@@ -104,7 +97,20 @@
            [:h2 "Submissions"]
             (common/post-list (users/get-posts hs_id))))
 
+(defpartial user-item [{:keys [hs_id] :as user}]
+            [:li (common/user-link hs_id)])
+
+(defpartial list-users [users]
+            [:ol.userList
+             (map user-item users)])
+
 (defpage "/lists" {}
+         (common/layout
+           [:div {:class "listLink"}
+            (link-to "/leaders" "leaders")
+            [:span "Users with most karma."]]))
+
+(defpage "/leaders" {}
          (common/layout
            [:h2 "Top Users"]
             (list-users (users/get-top-users))))

@@ -328,6 +328,20 @@ ol.userList {
   content: ' | ';
 }
 
+.listLink {
+  font-size: 10pt;
+  color: #828282;
+}
+
+.listLink a {
+  width: 110px;
+  display: inline-block;
+}
+
+.listLink:first-child {
+  margin-top: 10px;
+}
+
 footer {
   border-top: 2px solid #00e837;;
   background-color: #f6f6ef;
