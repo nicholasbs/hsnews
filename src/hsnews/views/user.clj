@@ -98,8 +98,10 @@
            [:h2 "Submissions"]
             (common/post-list (users/get-posts hs_id))))
 
-(defpartial user-item [{:keys [hs_id] :as user}]
-            [:li (common/user-link hs_id)])
+(defpartial user-item [{:keys [hs_id karma] :as user}]
+            [:li 
+             (common/user-link hs_id)
+             [:span karma]])
 
 (defpartial list-users [users]
             [:ol.userList

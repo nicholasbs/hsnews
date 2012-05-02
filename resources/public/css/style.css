@@ -271,6 +271,11 @@ ol.userList {
   font-size: 10pt;
 }
 
+ol.userList .userLink {
+  width: 110px;
+  display: inline-block;
+}
+
 .subtext {
   position: relative;
   font-size: 7pt;

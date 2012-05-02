@@ -35,7 +35,7 @@
   (str points " point" (if (not= points 1) "s")))
 
 (defpartial user-link [hs_id]
-  (link-to (str "/users/" hs_id) (users/get-username hs_id)))
+  (link-to {:class "userLink"} (str "/users/" hs_id) (users/get-username hs_id)))
 
 (defpartial upvote-comment-link [com]
   (if (comments/is-author? com) [:span.isAuthor.indicator "*"])
