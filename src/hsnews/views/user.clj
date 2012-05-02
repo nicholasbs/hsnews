@@ -7,6 +7,7 @@
             [noir.validation :as vali]
             [hsnews.models.user :as users]
             [hsnews.models.post :as posts]
+            [hsnews.models.comment :as comments]
             [hsnews.views.common :as common]
             [hsnews.utils :as utils]))
 
@@ -108,9 +109,17 @@
          (common/layout
            [:div {:class "listLink"}
             (link-to "/leaders" "leaders")
-            [:span "Users with most karma."]]))
+            [:span "Users with most karma."]]
+           [:div {:class "listLink"}
+            (link-to "/bestcomments" "bestcomments")
+            [:span "Highest voted recent comments."]]))
 
 (defpage "/leaders" {}
          (common/layout
            [:h2 "Top Users"]
             (list-users (users/get-top-users))))
+
+(defpage "/bestcomments" {}
+         (common/layout
+           [:h2 "Best Comments"]
+            (common/comment-list (comments/get-top-comments))))

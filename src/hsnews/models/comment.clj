@@ -47,4 +47,10 @@
                (fetch-one :users :where {:hs_id author})
                {:$inc {:karma 1}}))))
 
+(defn get-top-comments []
+  (let [ts (ctime/now)
+        oneweekago (- (coerce/to-long ts) 604800000)]
+    (fetch :comments :where {:ts {:$gte oneweekago}} :sort {:points -1} :limit 100)))
+
+
 
