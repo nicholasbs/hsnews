@@ -20,7 +20,7 @@
   ((get-user hs_id) :username))
 
 (defn get-comments [hs_id]
-  (fetch :comments :where {:author hs_id}))
+  (fetch :comments :where {:author hs_id} :sort {:ts -1}))
 
 (defn get-posts [hs_id]
   (fetch :posts :where {:author hs_id}))
