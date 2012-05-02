@@ -31,6 +31,9 @@
 (defn extract-domain-from-url [url]
   (second (re-find #"^(?:[^:/]*://)?(?:www\.)?([^/\?]+)(?:.*)$" url)))
 
+(defn format-points [points]
+  (str points " point" (if (not= points 1) "s")))
+
 (defpartial user-link [hs_id]
   (link-to (str "/users/" hs_id) (users/get-username hs_id)))
 
@@ -70,7 +73,7 @@
 
 (defpartial post-subtext [{:keys [ts author points] :as post}]
             [:div.subtext
-              [:span.points points " points"]
+              [:span.points (format-points points)]
               [:span.author (user-link author)]
               [:span.date (utils/time-ago ts)]
               [:span.commentCount (comment-count post)]])
