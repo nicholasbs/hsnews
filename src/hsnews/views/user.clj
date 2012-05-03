@@ -29,7 +29,7 @@
 (defpartial user-fields [{:keys [username] :as user}]
             [:ul.userForm
              [:li
-              (text-field {:placeholder "Username"} :username username)
+              (text-field {:placeholder "E-mail"} :username username)
               (vali/on-error :username common/error-text)]
              [:li
               (password-field {:placeholder "Password"} :password)
