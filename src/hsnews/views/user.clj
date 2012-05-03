@@ -119,9 +119,16 @@
 (defpage "/leaders" {}
          (common/layout
            [:h2 "Top Users"]
-            (list-users (users/get-top-users))))
+           (list-users (users/get-top-users))))
 
 (defpage "/bestcomments" {}
          (common/layout
            [:h2 "Best Comments"]
-            (common/comment-list (comments/get-top-comments))))
+           (common/comment-list (comments/get-top-comments))))
+
+(defpage "/bookmarklet" {}
+         (let [bookmarklet-url "javascript:window.location=%22http://news.hackerschool.com/submit?link=%22+encodeURIComponent(document.location)+%22&title=%22+encodeURIComponent(document.title)"]
+           (common/layout
+             [:h2 "Bookmarklet"]
+             [:p "Inspired by the " (link-to "http://ycombinator.com/bookmarklet.html" "Hacker News bookmarklet") " we created one just for Hacker School News. When you click on the bookmarklet, it will submit the page you're on. To install, drag this link to your browser toolbar:"]
+             (link-to {:class "bookmarkletLink"} bookmarklet-url "post to HSN"))))

@@ -128,6 +128,7 @@
                 [:footer
                  [:ul
                   [:li (link-to "/lists" "Lists")]
+                  [:li (link-to "/bookmarklet" "Bookmarklet")]
                   [:li (link-to "http://www.hackerschool.com" "Hacker School")]
                   [:li (link-to "https://github.com/nicholasbs/hsnews/issues" "Feature Requests")]
                   [:li (link-to "https://github.com/nicholasbs/hsnews" "Source on Github")]]]]]))
