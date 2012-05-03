@@ -63,8 +63,9 @@
             (let [posts (fetch-by-ids :posts (map #(get % :post_id) comments))
                   posts-by-id (reduce #(assoc %1 (get %2 :_id) %2) {} posts)
                   comments (map #(assoc % :post_title (get (get posts-by-id (get % :post_id)) :title)) comments)]
-              [:ol.commentList
-               (map comment-item comments)]))
+              (if (not-empty comments)
+                [:ol.commentList (map comment-item comments)]
+                [:div.empty "No comments"])))
 
 (defpartial upvote-link [post]
   (if (posts/is-author? post) [:span.isAuthor.indicator "*"])
@@ -108,6 +109,7 @@
                   (link-to "/" "Hacker School News")]
                  [:ul 
                   [:li (link-to "/newest" "new")]
+                  [:li (link-to "/newcomments" "comments")]
                   [:li (link-to "http://www.hackruiter.com/companies" "jobs")]
                   [:li (link-to "/submit" "submit")]]
                  (let [hs_id (users/current-user)]

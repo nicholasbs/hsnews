@@ -93,3 +93,7 @@
           (do
             (comments/upvote! com)
             (resp/redirect (or (common/get-referer) "/")))))
+
+(defpage "/newcomments" {}
+         (common/layout
+          (common/comment-list (comments/get-recent-comments))))

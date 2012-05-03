@@ -52,5 +52,5 @@
         oneweekago (- (coerce/to-long ts) 604800000)]
     (fetch :comments :where {:ts {:$gte oneweekago}} :sort {:points -1} :limit 100)))
 
-
-
+(defn get-recent-comments []
+  (fetch :comments :sort {:ts -1} :limit 100))
