@@ -34,6 +34,9 @@
 (defn format-points [points]
   (str points " point" (if (not= points 1) "s")))
 
+(defn comment-points [{:keys [points] :as com}]
+  (if (comments/is-author? com) (format-points points)))
+
 (defpartial user-link [hs_id]
   (link-to {:class "userLink"} (str "/users/" hs_id) (users/get-username hs_id)))
 
@@ -49,6 +52,7 @@
 (defpartial comment-subtext [{:keys [ts author points post_id] :as com}]
             [:div.subtext.comment
               (upvote-comment-link com)
+              [:span.points (comment-points com)]
               [:span.author (user-link author)]
               [:span.date (utils/time-ago ts)]])
 
