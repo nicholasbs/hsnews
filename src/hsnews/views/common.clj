@@ -55,7 +55,7 @@
 (defpartial comment-item [{:keys [body] :as com}]
             [:li
              (comment-subtext com)
-             [:div.commentBody body]])
+             [:div.commentBody (string/replace body "\n" "<br />")]])
 
 ; TODO Make this function less horrible and inefficient.
 ; (no need for extra map over comments)
