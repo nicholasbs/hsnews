@@ -28,12 +28,15 @@
 (defn get-karma [hs_id]
   (int (:karma (get-user hs_id))))
 
-(defn prepare [{password :password :as user}]
-  (let [ts (ctime/now)]
-    (-> user
-      (assoc :ts (coerce/to-long ts))
-      (assoc :password (crypt/encrypt password))
-      (assoc :karma 0))))
+(defn increment_hs_id []
+  "Finds newest user and returns a number one greater than their hs_id"
+  (let [newest-user (fetch :users :sort {:ts -1} :limit 1)]
+    (if-not (empty? newest-user)
+      (+ 1 (Integer/parseInt (:hs_id (first newest-user))))
+      0)))
+
+(defn store! [user]
+  (update! :users user user))
 
 (defn valid-username? [username]
   (vali/rule (not (fetch-one :users :where {:username username}))
@@ -51,9 +54,6 @@
 
 (defn get-top-users []
   (fetch :users :sort {:karma -1} :limit 100))
-
-(defn store! [user]
-  (update! :users user user))
 
 (defn determine-username [{:keys [twitter github irc email hs_id] :as user}]
   (cond (not (blank? twitter)) twitter
@@ -74,12 +74,12 @@
 
         (insert! :users new-user)))))
 
-(defn autologin! [{:keys [hs_id] :as user}]
+(defn autologin! [{:keys [hs_id]}]
   (session/put! :hs_id hs_id))
 
-(defn login! [{:keys [username password]}]
-  (let [request-url auth-url
-        resp (client/post request-url {:throw-exceptions false :form-params {:email username :password password}})]
+(defn remote-auth [username password]
+  "Used if auth-url is specified."
+  (let [resp (client/post auth-url {:throw-exceptions false :form-params {:email username :password password}})]
     (if (= 200 (resp :status))
       (let [resp-data (read-json (resp :body))
             hs_id (str (resp-data :hs_id))
@@ -92,16 +92,27 @@
         (autologin! (fetch-one :users :where {:hs_id hs_id})))
       (vali/set-error :username "Invalid username and/or password"))))
 
-  (comment
-  (let [{stored-pass :password} (get-user username)]
-    (if (and stored-pass
-             (crypt/compare password stored-pass))
-      (autologin! user)
-      (vali/set-error :username "Invalid username and/or password"))))
+(defn local-auth [username password]
+  "Used if auth-url is nil."
+  (let [user (fetch-one :users :where {:username username})
+        stored-pass (:password user)]
+    (if (and stored-pass (crypt/compare password stored-pass))
+        (autologin! user)
+        (vali/set-error :username "Invalid username and/or password"))))
+
+(defn login! [{:keys [username password]}]
+  (if-not (blank? auth-url)
+    (remote-auth username password)
+    (local-auth username password)))
 
 (defn add! [{:keys [username password] :as user}]
-  (when (valid-username? username)
-    (when (valid-password? password)
-      (do
-        (-> user (prepare) (store!))
-        (autologin! {:username username})))))
+  (let [ts (ctime/now)]
+    (when (valid-username? username)
+      (when (valid-password? password)
+        (do
+          (-> user
+            (assoc :ts (coerce/to-long ts))
+            (assoc :password (crypt/encrypt password))
+            (assoc :karma 0)
+            (assoc :hs_id (str (increment_hs_id)))
+            (store!)))))))
